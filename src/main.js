@@ -7,7 +7,7 @@ import axios from 'axios'
 
 Vue.config.productionTip = false
 
-Vue.prototype.$apiHost = 'http://ejcifra-api.herokuapp.com/api';
+Vue.prototype.$apiHost = 'http://ejcifra-api.herokuapp.com/api'
 
 /* eslint-disable no-new */
 new Vue({
