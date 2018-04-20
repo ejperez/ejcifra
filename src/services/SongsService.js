@@ -1,7 +1,8 @@
-import axios from "axios";
+import axios from "axios"
+import 'es6-promise/auto'
 
 var SongsService = {
-	apiHost: 'http://ejcifra-api.herokuapp.com/api',
+	apiHost: 'https://ejcifra-api.herokuapp.com/api',
 	get: function ( successCallback, errorCallback, search ) {
 		axios
 			.get( SongsService.apiHost + "/songs" )
