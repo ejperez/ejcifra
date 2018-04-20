@@ -10,8 +10,6 @@
 
 <script>
 import SongsService from "../services/SongsService";
-import ChordPlusParser from "chord-plus/src/chord-plus-parser";
-import ChordPlusFormatter from "chord-plus/src/chord-plus-formatter";
 
 export default {
   name: "View",
@@ -29,10 +27,6 @@ export default {
       success: function(result) {
         if (result.data) {
           scope.song = result.data;
-
-		  var parsed = ChordPlusParser.parse(scope.song.body);
-		  
-          scope.content = ChordPlusFormatter.format(parsed);
         } else {
           // No hits
         }
