@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import SongsService from "../services/SongsService";
+import SongsService from "@/services/SongsService";
 
 export default {
   name: "View",
@@ -99,7 +99,7 @@ export default {
     },
     reset: function(){
       if (this.song) {
-        this.newKey = this.song.key;
+        this.newKey = null;
 
         this.content = ChordPlus.getHTML(
           this.song.body,

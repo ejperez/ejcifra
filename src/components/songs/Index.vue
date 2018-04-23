@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import SongsService from "../services/SongsService";
+import SongsService from "@/services/SongsService";
 
 export default {
   name: "Index",
