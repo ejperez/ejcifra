@@ -5,7 +5,7 @@
 	<button v-on:click="search()" type="button">Search</button>
 	<ul>
 		<li v-for="song in songs">
-			<router-link v-bind:to="{ name: 'View', params: { id: song.id, slug: song.slug } }">{{ song.title }} - {{ song.artists}} {{ song.comment ? '(' + song.comment  + ')' : '' }}</router-link>			
+			<router-link v-bind:to="{ name: 'SongsView', params: { id: song.id, slug: song.slug } }">{{ song.title }} - {{ song.artists}} {{ song.comment ? '(' + song.comment  + ')' : '' }}</router-link>			
 		</li>
 	</ul>
 	<ul>
@@ -20,7 +20,7 @@
 import SongsService from "@/services/SongsService";
 
 export default {
-  name: "Index",
+  name: "SongsIndex",
   data: function() {
     return {
       msg: "Songs",

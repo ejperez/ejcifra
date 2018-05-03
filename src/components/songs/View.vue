@@ -1,8 +1,8 @@
 <template>
 	<div class="index">
 	  	<ul>
-        <li><router-link v-bind:to="{ name: 'Index' }">Songs</router-link></li>
-        <li>{{ song.title }}</li>
+        	<li><router-link v-bind:to="{ name: 'SongsIndex' }">Songs</router-link></li>
+        	<li>{{ song.title }}</li>
 	  	</ul>
       <div>
         <label>Change key</label>
@@ -28,7 +28,7 @@
 import SongsService from "@/services/SongsService";
 
 export default {
-  name: "View",
+  name: "SongsView",
   props: ["id", "slug"],
   data: function() {
     return {

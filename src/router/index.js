@@ -1,28 +1,56 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '@/components/songs/Index'
-import View from '@/components/songs/View'
-import Login from '@/components/auth/Login'
+import SongsIndex from '@/components/songs/Index'
+import AdminSongsIndex from '@/components/admin/songs/Index'
+import SongsView from '@/components/songs/View'
+import AuthLogin from '@/components/auth/Login'
 
 Vue.use( Router )
 
-export default new Router( {
+const router = new Router( {
 	routes: [
 		{
 			path: '/',
-			name: 'Index',
-			component: Index
+			name: 'SongsIndex',
+			component: SongsIndex
 		},
 		{
 			path: '/songs/:id/:slug',
-			name: 'View',
-			component: View,
+			name: 'SongsView',
+			component: SongsView,
 			props: true
 		},
 		{
 			path: '/login',
-			name: 'Login',
-			component: Login
+			name: 'AuthLogin',
+			component: AuthLogin
+		},
+		{
+			path: '/admin/songs',
+			name: 'AdminSongsIndex',
+			component: AdminSongsIndex
 		}
 	]
 } )
+
+// meta: { requiresAuth: true}
+
+router.beforeEach( ( to, from, next ) => {
+	console.log( to );
+	if ( to.matched.some( record => record.meta.requiresAuth ) ) {
+		if ( true ) {
+			next( {
+				path: '/login',
+				query: {
+					redirect: to.fullPath,
+				},
+			} );
+		} else {
+			next();
+		}
+	} else {
+		next();
+	}
+} )
+
+export default router

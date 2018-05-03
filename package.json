@@ -14,6 +14,7 @@
     "build": "cp node_modules/chord-plus/dist/chord-plus.min.js static/vendor/chord-plus/ && node build/build.js"
   },
   "dependencies": {
+    "js-cookie": "^2.2.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
