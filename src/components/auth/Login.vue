@@ -2,7 +2,7 @@
 	<div class="index">
 		<h1>Log in</h1>
 		<ul>
-        	<li><router-link v-bind:to="{ name: 'SongsIndex' }">Songs</router-link></li>
+        	<li><router-link :to="{ name: 'SongsIndex' }">Songs</router-link></li>
         </ul>
 		<form v-on:submit.prevent="login()">
 			<input placeholder="Email" type="text" v-model="email">
@@ -28,7 +28,8 @@ export default {
 
     this.handlers = {
       success: function(result) {
-        scope.$router.push({ name: "SongsIndex" });
+        scope.$router.push({ name: "AdminSongsIndex" });
+        scope.$emit("logged-in");
       },
       error: function(error) {
         console.debug(error);

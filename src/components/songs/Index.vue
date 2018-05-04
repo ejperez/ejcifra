@@ -1,18 +1,23 @@
 <template>
-  <div class="index">
-    <h1>{{ msg }}</h1>
-	<input v-model="searchKeyword" type="text" placeholder="Title or artist name">
-	<button v-on:click="search()" type="button">Search</button>
-	<ul>
-		<li v-for="song in songs">
-			<router-link v-bind:to="{ name: 'SongsView', params: { id: song.id, slug: song.slug } }">{{ song.title }} - {{ song.artists}} {{ song.comment ? '(' + song.comment  + ')' : '' }}</router-link>			
-		</li>
-	</ul>
-	<ul>
-		<li v-for="page in pages">
-			<button v-bind:disabled="currentPage === page" v-on:click="goToPage(page)" type="button">{{ page }}</button>
-		</li>
-	</ul>
+	<div class="index">
+		<h1>{{ msg }}</h1>
+
+		<form v-on:submit.prevent="search()">
+			<input v-model="searchKeyword" type="text" placeholder="Title or artist name">
+			<button type="submit">Search</button>
+		</form>
+
+		<ul>
+			<li v-for="song in songs" :key="song.id">
+				<router-link :to="{ name: 'SongsView', params: { id: song.id, slug: song.slug } }">{{ song.title }} - {{ song.artists }} {{ song.comment ? '(' + song.comment  + ')' : '' }}</router-link>			
+			</li>
+		</ul>
+
+		<ul>
+			<li v-for="page in pages" :key="page">
+				<button :disabled="currentPage === page" v-on:click="goToPage(page)" type="button">{{ page }}</button>
+			</li>
+		</ul>
   </div>
 </template>
 

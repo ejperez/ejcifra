@@ -1,13 +1,13 @@
 <template>
 	<div class="index">
 	  	<ul>
-        	<li><router-link v-bind:to="{ name: 'SongsIndex' }">Songs</router-link></li>
+        	<li><router-link :to="{ name: 'SongsIndex' }">Songs</router-link></li>
         	<li>{{ song.title }}</li>
 	  	</ul>
       <div>
         <label>Change key</label>
         <select v-model="newKey" v-on:change="transpose()">
-          <option v-for="key in keys" v-bind:value="key">{{ key }}</option>
+          <option v-for="key in keys" :value="key">{{ key }}</option>
         </select>
         <button type="button" v-on:click="reset()">Reset</button>
       </div>

@@ -1,9 +1,10 @@
 <template>
-  <div id="app">
-	  <div v-if="user">{{ user.name }} | <button v-on:click="logout()" type="button">Log out</button></div>
-	  <div v-else><router-link v-bind:to="{ name: 'AuthLogin' }">Log in</router-link></div>
-    <router-view/>
-  </div>
+	<div id="app">
+		<div v-if="user">{{ user.name }} | <button v-on:click="logout()" type="button">Log out</button></div>
+		<div v-else><router-link :to="{ name: 'AuthLogin' }">Log in</router-link></div>
+		
+		<router-view v-on:logged-in="updateAuthUser()"/>
+	</div>
 </template>
 
 <script>
@@ -11,8 +12,10 @@ import AuthService from "@/services/AuthService";
 
 export default {
   name: "App",
-  data: {
-    user: null
+  data: function() {
+    return {
+      user: null
+    };
   },
   created: function() {
     var scope = this;
@@ -20,7 +23,7 @@ export default {
 
     this.handlers = {
       success: function(result) {
-        scope.user = null;
+        scope.user = AuthService.getLoggedInUser();
         scope.$router.push({ name: "SongsIndex" });
       },
       error: function(error) {
@@ -29,6 +32,9 @@ export default {
     };
   },
   methods: {
+    updateAuthUser: function() {
+      this.user = AuthService.getLoggedInUser();
+    },
     logout: function() {
       AuthService.logout(this.handlers.success, this.handlers.error);
     }
