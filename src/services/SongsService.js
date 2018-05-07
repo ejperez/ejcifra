@@ -1,12 +1,21 @@
 import axios from "axios"
-import 'es6-promise/auto'
+import "es6-promise/auto"
+import Cookies from "js-cookie/src/js.cookie"
+import AuthService from "@/services/AuthService";
 
 var SongsService = {
-	apiHost: 'https://ejcifra-api.herokuapp.com/api',
-
+	saveDraft: function ( song ) {
+		localStorage.setItem( 'songDraft', song );
+	},
+	getDraft: function () {
+		return localStorage.getItem( 'songDraft' );
+	},
+	removeDraft: function () {
+		return localStorage.removeItem( 'songDraft' );
+	},
 	get: function ( successCallback, errorCallback, search, page ) {
 		axios
-			.get( SongsService.apiHost + "/songs", {
+			.get( window.apiHost + "/songs", {
 				params: {
 					search: search,
 					page: page
@@ -21,12 +30,43 @@ var SongsService = {
 	},
 	getSingle: function ( successCallback, errorCallback, id ) {
 		axios
-			.get( SongsService.apiHost + "/songs/" + id )
+			.get( window.apiHost + "/songs/" + id )
 			.then( function ( response ) {
 				successCallback( response );
 			} )
 			.catch( function ( error ) {
 				errorCallback( error )
+			} );
+	},
+	save: function ( successCallback, errorCallback, id, song ) {
+		let url = window.apiHost + '/songs', method = 'post', scope = this;
+
+		if ( id ) {
+			url += '/' + id;
+			method = 'put';
+		}
+
+		axios( {
+			url: url,
+			data: song,
+			method: method,
+			headers: {
+				Authorization: 'Bearer ' + Cookies.get( 'token' )
+			}
+		} )
+			.then( function ( response ) {
+				successCallback( response );
+			} )
+			.catch( function ( error ) {
+				let errorMessage = error.response.data.error;
+
+				if ( errorMessage === "Unauthenticated." ) {
+					AuthService.refresh( function () {
+						scope.save( successCallback, errorCallback, id, song );
+					}, errorCallback );
+				} else {
+					errorCallback( error );
+				}
 			} );
 	}
 };

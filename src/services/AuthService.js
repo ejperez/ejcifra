@@ -3,12 +3,11 @@ import 'es6-promise/auto'
 import Cookies from "js-cookie/src/js.cookie"
 
 var AuthService = {
-	apiHost: 'https://ejcifra-api.herokuapp.com/api',
-
 	getLoggedInUser: function () {
 		let user = Cookies.get( 'user' );
+		let token = Cookies.get( 'token' );
 
-		if ( !user ) {
+		if ( !user || !token ) {
 			return null;
 		}
 
@@ -18,6 +17,26 @@ var AuthService = {
 			name: user.name
 		};
 	},
+	refresh( successCallback, errorCallback ) {
+		let config = {
+			headers: {
+				Authorization: 'Bearer ' + Cookies.get( 'token' )
+			}
+		};
+
+		Cookies.remove( 'token' );
+
+		axios
+			.post( window.apiHost + "/auth/refresh", {}, config )
+			.then( function ( response ) {
+				Cookies.set( 'token', response.data.access_token );
+
+				successCallback( response );
+			} )
+			.catch( function ( error ) {
+				errorCallback( error )
+			} );
+	},
 	login: function ( successCallback, errorCallback, email, password ) {
 		let data = {
 			email: email,
@@ -25,7 +44,7 @@ var AuthService = {
 		};
 
 		axios
-			.post( AuthService.apiHost + "/auth/login", data )
+			.post( window.apiHost + "/auth/login", data )
 			.then( function ( response ) {
 				Cookies.set( 'token', response.data.access_token );
 
@@ -37,7 +56,7 @@ var AuthService = {
 				};
 
 				axios
-					.post( AuthService.apiHost + "/auth/me", {}, config )
+					.post( window.apiHost + "/auth/me", {}, config )
 					.then( function ( response ) {
 						Cookies.set( 'user', response.data );
 
@@ -63,7 +82,7 @@ var AuthService = {
 		Cookies.remove( 'user' );
 
 		axios
-			.post( AuthService.apiHost + "/auth/logout", {}, config )
+			.post( window.apiHost + "/auth/logout", {}, config )
 			.then( function ( response ) {
 				successCallback( response );
 			} )

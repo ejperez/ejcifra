@@ -2,17 +2,21 @@
 	<div class="index">
 	  	<ul>
         	<li><router-link :to="{ name: 'AdminSongsIndex' }">Admin Songs</router-link></li>
-        	<li>{{ song.title }}</li>			
+        	<li v-if="id">{{ song.title }}</li>			
 	  	</ul>
 
 		<form v-on:submit.prevent="save()">
-			Title: <input type="text" v-model="song.title"><br>
+			Title: <input required type="text" v-model="song.title"><br>
 			Artists: <input type="text" v-model="song.artists"><br>
-			Key: <select v-model="song.key" name="" id=""><option v-for="key in keys" :key="key" :value="key" v-html="key"></option></select><br>
-			BPM: <input type="number" v-model="song.bpm"><br>
-			Body:<br><textarea v-model="song.body" cols="30" rows="10"></textarea><br>
+			Key: <select v-model="song.key"><option v-for="key in keys" :key="key" :value="key" v-html="key"></option></select><br>
+			Meter: <select v-model="song.meter"><option v-for="meter in meters" :key="meter" :value="meter" v-html="meter"></option></select><br>
+			BPM: <input required type="number" v-model="song.bpm"><br>
+			Comment: <input type="text" v-model="song.comment"><br>
+			Body:<br><textarea required v-model="song.body" cols="30" rows="10"></textarea><br>
 			<button type="submit">Save</button>
 		</form>
+
+		<div v-html="message"></div>
 	</div>
 </template>
 
@@ -27,12 +31,13 @@ export default {
       song: {
         title: "",
         artists: "",
-        key: "",
-        bpm: "",
-        meter: "",
-        comment: false
+        key: "C",
+        bpm: 100,
+        meter: "4/4",
+        comment: ""
       },
-      content: "",
+      message: "",
+      meters: ["4/4", "3/4", "6/8"],
       keys: [
         "C",
         "C#",
@@ -60,24 +65,54 @@ export default {
 
     this.handlers = {
       success: function(result) {
-        if (result.data) {
-          scope.song = result.data;
-          scope.content = ChordPlus.getHTML(scope.song.body);
+        let song = result.data;
+        SongsService.removeDraft();
+
+        if (scope.id) {
+          scope.song = song;
         } else {
-          // No hits
+          scope.$router.push({
+            name: "AdminSongsEdit",
+            params: { id: song.id, slug: song.slug }
+          });
         }
       },
       error: function(error) {
-        console.debug(error);
+        let errorMessage = error.response.data.error;
+
+        if (errorMessage === "Unauthenticated.") {
+          scope.$router.push({ name: "AuthLogin" });
+        }
+
+        scope.message = errorMessage;
       }
     };
   },
   mounted: function() {
-    SongsService.getSingle(this.handlers.success, this.handlers.error, this.id);
+    if (this.id) {
+      this.song = SongsService.getSingle(
+        this.handlers.success,
+        this.handlers.error,
+        this.id
+      );
+    } else {
+      let songDraft = SongsService.getDraft();
+
+      if (songDraft) {
+        this.song = JSON.parse(songDraft);
+      }
+    }
   },
   methods: {
     save: function() {
-      console.log("saved...");
+      SongsService.saveDraft(JSON.stringify(this.song));
+
+      SongsService.save(
+        this.handlers.success,
+        this.handlers.error,
+        this.id,
+        this.song
+      );
     }
   }
 };

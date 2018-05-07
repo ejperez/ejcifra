@@ -2,6 +2,10 @@
 	<div class="index">
 		<h1>{{ msg }}</h1>
 
+		<ul>
+			<li><router-link :to="{ name: 'AdminSongsAdd' }">Add new</router-link></li>
+		</ul>
+
 		<form v-on:submit.prevent="search()">
 			<input v-model="searchKeyword" type="text" placeholder="Title or artist name">
 			<button type="submit">Search</button>
@@ -9,7 +13,7 @@
 
 		<ul>
 			<li v-for="song in songs" :key="song.id">
-				<router-link :to="{ name: 'AdminSongsEdit', params: { id: song.id, slug: song.slug } }">{{ song.title }} - {{ song.artists }} {{ song.comment ? '(' + song.comment  + ')' : '' }}</router-link>
+				<router-link :to="{ name: 'AdminSongsEdit', params: { id: song.id, slug: song.slug } }">{{ song.title }} <span v-if="song.artists">-</span> {{ song.artists }} {{ song.comment ? '(' + song.comment  + ')' : '' }}</router-link>
 			</li>
 		</ul>
 

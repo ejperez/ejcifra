@@ -6,10 +6,16 @@ import router from './router'
 
 Vue.config.productionTip = false
 
+if ( Vue.config.productionTip ) {
+	window.apiHost = 'https://ejcifra-api.herokuapp.com/api'
+} else {
+	window.apiHost = 'http://ej.local/api'
+}
+
 /* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  components: { App },
-  template: '<App/>'
-})
+new Vue( {
+	el: '#app',
+	router,
+	components: { App },
+	template: '<App/>'
+} )

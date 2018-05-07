@@ -7,11 +7,11 @@
       <div>
         <label>Change key</label>
         <select v-model="newKey" v-on:change="transpose()">
-          <option v-for="key in keys" :value="key">{{ key }}</option>
+          <option v-for="key in keys" :value="key" :key="key">{{ key }}</option>
         </select>
         <button type="button" v-on:click="reset()">Reset</button>
       </div>
-      <div>{{ song.title }} - {{ song.artists }}</div>
+      <div>{{ song.title }} <span v-if="song.artists">-</span> {{ song.artists }}</div>
       <div>
         <ul>
           <li>Key: {{ newKey || song.key }}</li>
@@ -80,9 +80,12 @@ export default {
       }
     };
 
-    let ckeditor = document.createElement("script");
-    ckeditor.setAttribute("src", "static/vendor/chord-plus/chord-plus.min.js");
-    document.head.appendChild(ckeditor);
+    let chordPlusScript = document.createElement("script");
+    chordPlusScript.setAttribute(
+      "src",
+      "static/vendor/chord-plus/chord-plus.min.js"
+    );
+    document.head.appendChild(chordPlusScript);
   },
   mounted: function() {
     SongsService.getSingle(this.handlers.success, this.handlers.error, this.id);
@@ -97,14 +100,11 @@ export default {
         );
       }
     },
-    reset: function(){
+    reset: function() {
       if (this.song) {
         this.newKey = null;
 
-        this.content = ChordPlus.getHTML(
-          this.song.body,
-          this.song.key
-        );
+        this.content = ChordPlus.getHTML(this.song.body, this.song.key);
       }
     }
   }
