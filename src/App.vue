@@ -2,8 +2,10 @@
 	<div id="app">
 		<div v-if="user">{{ user.name }} | <button v-on:click="logout()" type="button">Log out</button></div>
 		<div v-else><router-link :to="{ name: 'AuthLogin' }">Log in</router-link></div>
+
+		<div v-if="message" :class="{ success: isSuccessMessage, error: !isSuccessMessage }" v-html="message"></div>
 		
-		<router-view v-on:logged-in="updateAuthUser()"/>
+		<router-view @show-message="showMessage" @logged-in="updateAuthUser"/>
 	</div>
 </template>
 
@@ -14,7 +16,9 @@ export default {
   name: "App",
   data: function() {
     return {
-      user: null
+      user: null,
+      message: false,
+      isSuccessMessage: true
     };
   },
   created: function() {
@@ -37,6 +41,10 @@ export default {
     },
     logout: function() {
       AuthService.logout(this.handlers.success, this.handlers.error);
+    },
+    showMessage: function(args) {
+      this.message = args.message;
+      this.isSuccessMessage = args.isSuccessMessage;
     }
   }
 };

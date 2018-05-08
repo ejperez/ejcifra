@@ -28,8 +28,13 @@ export default {
 
     this.handlers = {
       success: function(result) {
-        scope.$router.push({ name: "AdminSongsIndex" });
         scope.$emit("logged-in");
+
+        if (scope.$route.query.hasOwnProperty("redirect")) {
+          scope.$router.push({ path: scope.$route.query.redirect });
+        } else {
+          scope.$router.push({ name: "AdminSongsIndex" });
+        }
       },
       error: function(error) {
         console.debug(error);

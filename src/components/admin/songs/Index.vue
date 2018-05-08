@@ -13,7 +13,9 @@
 
 		<ul>
 			<li v-for="song in songs" :key="song.id">
-				<router-link :to="{ name: 'AdminSongsEdit', params: { id: song.id, slug: song.slug } }">{{ song.title }} <span v-if="song.artists">-</span> {{ song.artists }} {{ song.comment ? '(' + song.comment  + ')' : '' }}</router-link>
+				<span>{{ song.title }} <span v-if="song.artists">-</span> {{ song.artists }} {{ song.comment ? '(' + song.comment  + ')' : '' }}</span>
+				<router-link :to="{ name: 'AdminSongsEdit', params: { id: song.id, slug: song.slug } }">Edit</router-link>
+				<button @click="remove(song)" type="button">Delete</button>
 			</li>
 		</ul>
 
@@ -89,6 +91,10 @@ export default {
         scope.searchKeyword,
         page
       );
+    },
+    remove: function(song) {
+      if (confirm("Delete " + song.title + " ?")) {
+      }
     }
   }
 };

@@ -68,6 +68,16 @@ var SongsService = {
 					errorCallback( error );
 				}
 			} );
+	},
+	delete: function ( successCallback, errorCallback, id ) {
+		axios
+			.delete( window.apiHost + "/songs/" + id )
+			.then( function ( response ) {
+				successCallback( response );
+			} )
+			.catch( function ( error ) {
+				errorCallback( error )
+			} );
 	}
 };
 

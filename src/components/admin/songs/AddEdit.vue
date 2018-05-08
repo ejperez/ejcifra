@@ -15,8 +15,6 @@
 			Body:<br><textarea required v-model="song.body" cols="30" rows="10"></textarea><br>
 			<button type="submit">Save</button>
 		</form>
-
-		<div v-html="message"></div>
 	</div>
 </template>
 
@@ -36,7 +34,6 @@ export default {
         meter: "4/4",
         comment: ""
       },
-      message: "",
       meters: ["4/4", "3/4", "6/8"],
       keys: [
         "C",
@@ -64,12 +61,20 @@ export default {
     var scope = this;
 
     this.handlers = {
+      getSuccess: function(result) {
+        scope.song = result.data;
+      },
       success: function(result) {
         let song = result.data;
         SongsService.removeDraft();
 
         if (scope.id) {
           scope.song = song;
+
+          scope.$emit("show-message", {
+            message: "Saved.",
+            isSuccessMessage: true
+          });
         } else {
           scope.$router.push({
             name: "AdminSongsEdit",
@@ -81,17 +86,25 @@ export default {
         let errorMessage = error.response.data.error;
 
         if (errorMessage === "Unauthenticated.") {
-          scope.$router.push({ name: "AuthLogin" });
+          scope.$router.push({
+            name: "AuthLogin",
+            query: {
+              redirect: scope.$route.fullPath
+            }
+          });
         }
 
-        scope.message = errorMessage;
+        scope.$emit("show-message", {
+          message: errorMessage,
+          isSuccessMessage: false
+        });
       }
     };
   },
   mounted: function() {
     if (this.id) {
       this.song = SongsService.getSingle(
-        this.handlers.success,
+        this.handlers.getSuccess,
         this.handlers.error,
         this.id
       );
