@@ -15,6 +15,7 @@
 			<li v-for="song in songs" :key="song.id">
 				<span>{{ song.title }} <span v-if="song.artists">-</span> {{ song.artists }} {{ song.comment ? '(' + song.comment  + ')' : '' }}</span>
 				<router-link :to="{ name: 'AdminSongsEdit', params: { id: song.id, slug: song.slug } }">Edit</router-link>
+				<button @click="duplicate(song)" type="button">Duplicate</button>
 				<button @click="remove(song)" type="button">Delete</button>
 			</li>
 		</ul>
@@ -46,6 +47,32 @@ export default {
     var scope = this;
 
     this.handlers = {
+      getSuccess: function(result) {
+        SongsService.save(
+          scope.handlers.duplicateSuccess,
+          scope.handlers.error,
+          null,
+          result.data
+        );
+      },
+      duplicateSuccess: function(result) {
+        let song = result.data;
+
+        scope.$emit("show-message", {
+          message: "Successfully duplicated " + song.title,
+          isSuccessMessage: true
+        });
+
+        SongsService.get(this.handlers.success, this.handlers.error);
+      },
+      deleteSuccess: function(result) {
+        scope.$emit("show-message", {
+          message: result.data.message,
+          isSuccessMessage: true
+        });
+
+        SongsService.get(scope.handlers.success, scope.handlers.error);
+      },
       success: function(result) {
         if (result.data.data.length) {
           scope.songs = result.data.data;
@@ -55,11 +82,19 @@ export default {
             scope.pages.push(i + 1);
           }
         } else {
-          // No hits
+          scope.$emit("show-message", {
+            message: "No songs matching your search. Please try again.",
+            isSuccessMessage: true
+          });
         }
       },
       error: function(error) {
-        console.debug(error);
+        let errorMessage = error.response.data.error;
+
+        scope.$emit("show-message", {
+          message: errorMessage,
+          isSuccessMessage: false
+        });
       }
     };
   },
@@ -94,7 +129,19 @@ export default {
     },
     remove: function(song) {
       if (confirm("Delete " + song.title + " ?")) {
+        SongsService.delete(
+          this.handlers.deleteSuccess,
+          this.handlers.error,
+          song.id
+        );
       }
+    },
+    duplicate: function(song) {
+      SongsService.getSingle(
+        this.handlers.getSuccess,
+        this.handlers.error,
+        song.id
+      );
     }
   }
 };

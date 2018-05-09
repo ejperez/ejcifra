@@ -43,8 +43,14 @@ export default {
       AuthService.logout(this.handlers.success, this.handlers.error);
     },
     showMessage: function(args) {
+      var scope = this;
       this.message = args.message;
       this.isSuccessMessage = args.isSuccessMessage;
+
+      setTimeout(function() {
+        scope.message = false;
+        scope.isSuccessMessage = true;
+      }, 5000);
     }
   }
 };
@@ -57,5 +63,13 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.success {
+  color: green;
+}
+
+.error {
+  color: red;
 }
 </style>

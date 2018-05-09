@@ -5,7 +5,7 @@
         	<li><router-link :to="{ name: 'SongsIndex' }">Songs</router-link></li>
         </ul>
 		<form v-on:submit.prevent="login()">
-			<input placeholder="Email" type="text" v-model="email">
+			<input placeholder="Email" type="email" v-model="email">
 			<input placeholder="Password" type="password" v-model="password">
 			<button type="submit">Log in</button>
 		</form>	
@@ -37,7 +37,12 @@ export default {
         }
       },
       error: function(error) {
-        console.debug(error);
+        let errorMessage = error.response.data.error;
+
+        scope.$emit("show-message", {
+          message: errorMessage,
+          isSuccessMessage: false
+        });
       }
     };
   },

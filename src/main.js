@@ -4,9 +4,9 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
-if ( Vue.config.productionTip ) {
+if ( process.env.NODE_ENV === 'production' ) {
 	window.apiHost = 'https://ejcifra-api.herokuapp.com/api'
 } else {
 	window.apiHost = 'http://ej.local/api'

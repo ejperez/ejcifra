@@ -70,13 +70,27 @@ var SongsService = {
 			} );
 	},
 	delete: function ( successCallback, errorCallback, id ) {
+		let scope = this, config = {
+			headers: {
+				Authorization: 'Bearer ' + Cookies.get( 'token' )
+			}
+		};
+
 		axios
-			.delete( window.apiHost + "/songs/" + id )
+			.delete( window.apiHost + "/songs/" + id, config )
 			.then( function ( response ) {
 				successCallback( response );
 			} )
 			.catch( function ( error ) {
-				errorCallback( error )
+				let errorMessage = error.response.data.error;
+
+				if ( errorMessage === "Unauthenticated." ) {
+					AuthService.refresh( function () {
+						scope.delete( successCallback, errorCallback, id );
+					}, errorCallback );
+				} else {
+					errorCallback( error );
+				}
 			} );
 	}
 };

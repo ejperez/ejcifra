@@ -86,6 +86,8 @@ export default {
         let errorMessage = error.response.data.error;
 
         if (errorMessage === "Unauthenticated.") {
+          scope.$emit("logged-in");
+
           scope.$router.push({
             name: "AuthLogin",
             query: {
@@ -103,7 +105,7 @@ export default {
   },
   mounted: function() {
     if (this.id) {
-      this.song = SongsService.getSingle(
+      SongsService.getSingle(
         this.handlers.getSuccess,
         this.handlers.error,
         this.id
