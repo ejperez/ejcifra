@@ -52,7 +52,7 @@ export default {
 
         scope.$emit("show-message", {
           message: "Successfully duplicated " + song.title,
-          isSuccessMessage: true
+          type: "success"
         });
 
         SongsService.get(scope.handlers.success, scope.handlers.error);
@@ -60,7 +60,7 @@ export default {
       deleteSuccess: function(result) {
         scope.$emit("show-message", {
           message: result.data.message,
-          isSuccessMessage: true
+          type: "success"
         });
 
         SongsService.get(scope.handlers.success, scope.handlers.error);
@@ -76,7 +76,7 @@ export default {
         } else {
           scope.$emit("show-message", {
             message: "No songs matching your search. Please try again.",
-            isSuccessMessage: true
+            type: "info"
           });
         }
       },
@@ -85,7 +85,7 @@ export default {
 
         scope.$emit("show-message", {
           message: errorMessage,
-          isSuccessMessage: false
+          type: "danger"
         });
       }
     };

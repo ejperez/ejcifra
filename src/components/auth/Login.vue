@@ -41,7 +41,7 @@ export default {
 
         scope.$emit("show-message", {
           message: errorMessage,
-          isSuccessMessage: false
+          type: "danger"
         });
       }
     };

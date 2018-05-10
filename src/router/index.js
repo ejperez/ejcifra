@@ -17,6 +17,11 @@ const router = new Router( {
 			component: SongsIndex
 		},
 		{
+			path: '/songs',
+			name: 'SongsIndex',
+			component: SongsIndex
+		},
+		{
 			path: '/songs/:id/:slug',
 			name: 'SongsView',
 			component: SongsView,

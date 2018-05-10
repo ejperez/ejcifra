@@ -1,27 +1,30 @@
 <template>
-	<div class="index">
-	  	<ul>
-        	<li><router-link :to="{ name: 'SongsIndex' }">Songs</router-link></li>
-        	<li>{{ song.title }}</li>
-	  	</ul>
-      <div>
-        <label>Change key</label>
-        <select v-model="newKey" v-on:change="transpose()">
-          <option v-for="key in keys" :value="key" :key="key">{{ key }}</option>
-        </select>
-        <button type="button" v-on:click="reset()">Reset</button>
-      </div>
-      <div>{{ song.title }} <span v-if="song.artists">-</span> {{ song.artists }}</div>
-      <div>
-        <ul>
-          <li>Key: {{ newKey || song.key }}</li>
-          <li>BPM: {{ song.bpm }}</li>
-          <li>Meter: {{ song.meter }}</li>
-          <li v-if="song.commet">{{ song.comment }}</li>
-        </ul>
-      </div>
-		  <div v-html="content"></div>
-	</div>
+	<div class="index">	  	
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<router-link class="breadcrumb-item" :to="{ name: 'SongsIndex' }">Songs</router-link>
+				<li class="breadcrumb-item active" aria-current="page">{{ song.title }}</li>
+			</ol>
+		</nav>
+
+		<div>
+			<label>Change key</label>
+			<select v-model="newKey" v-on:change="transpose()">
+			<option v-for="key in keys" :value="key" :key="key">{{ key }}</option>
+			</select>
+			<button type="button" v-on:click="reset()">Reset</button>
+		</div>
+		<div>{{ song.title }} <span v-if="song.artists">-</span> {{ song.artists }}</div>
+		<div>
+			<ul>
+			<li>Key: {{ newKey || song.key }}</li>
+			<li>BPM: {{ song.bpm }}</li>
+			<li>Meter: {{ song.meter }}</li>
+			<li v-if="song.commet">{{ song.comment }}</li>
+			</ul>
+		</div>
+			<div v-html="content"></div>
+		</div>
 </template>
 
 <script>
@@ -72,7 +75,10 @@ export default {
           scope.song = result.data;
           scope.content = ChordPlus.getHTML(scope.song.body);
         } else {
-          // No hits
+          scope.$emit("show-message", {
+            message: "No songs matching your search. Please try again.",
+            type: "info"
+          });
         }
       },
       error: function(error) {
@@ -83,7 +89,7 @@ export default {
     let chordPlusScript = document.createElement("script");
     chordPlusScript.setAttribute(
       "src",
-      "static/vendor/chord-plus/chord-plus.min.js"
+      "static/vendor/chord-plus/dist/chord-plus.min.js"
     );
     document.head.appendChild(chordPlusScript);
   },

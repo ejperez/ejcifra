@@ -78,7 +78,7 @@ export default {
 
           scope.$emit("show-message", {
             message: "Saved.",
-            isSuccessMessage: true
+            type: "success"
           });
         } else {
           scope.$router.push({
@@ -103,7 +103,7 @@ export default {
 
         scope.$emit("show-message", {
           message: errorMessage,
-          isSuccessMessage: false
+          type: "danger"
         });
       }
     };

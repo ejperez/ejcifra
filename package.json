@@ -6,13 +6,13 @@
 	"private": true,
 	"scripts": {
 		"tip": "Watch does not work in VM, run this in a terminal instead to run auto-compile: find -type f -exec touch {} +",
-		"dev": "webpack-dev-server --port 3000 --hot --host 0.0.0.0 --inline --progress --config build/webpack.dev.conf.js",
+		"dev": "webpack-dev-server --port 3000 --host 0.0.0.0 --inline --progress --config build/webpack.dev.conf.js",
 		"start": "npm run dev",
 		"unit": "jest --config test/unit/jest.conf.js --coverage",
 		"e2e": "node test/e2e/runner.js",
 		"test": "npm run unit && npm run e2e",
 		"lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
-		"build": "cp node_modules/chord-plus/dist/chord-plus.min.js static/vendor/chord-plus/ && node build/build.js"
+		"build": "node build/build.js"
 	},
 	"dependencies": {
 		"js-cookie": "^2.2.0",
@@ -35,6 +35,8 @@
 		"babel-preset-env": "^1.3.2",
 		"babel-preset-stage-2": "^6.22.0",
 		"babel-register": "^6.22.0",
+		"bootstrap": "^4.1.1",
+		"bootstrap.native": "^2.0.22",
 		"chalk": "^2.0.1",
 		"chord-plus": "github:ejperez/chord-plus",
 		"chromedriver": "^2.27.2",
