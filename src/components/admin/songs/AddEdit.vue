@@ -12,9 +12,13 @@
 			Meter: <select v-model="song.meter"><option v-for="meter in meters" :key="meter" :value="meter" v-html="meter"></option></select><br>
 			BPM: <input required type="number" v-model="song.bpm"><br>
 			Comment: <input type="text" v-model="song.comment"><br>
-			Body:<br><textarea required v-model="song.body" cols="30" rows="10"></textarea><br>
+			Body:<br><textarea id="editor" required v-model="song.body" cols="30" rows="10"></textarea><br>
 			<button type="submit">Save</button>
 		</form>
+
+		<ul>
+			<li v-for="symbol in symbols" :key="symbol"><button type="button" @click="insertToEditor(symbol)" v-html="symbol"></button></li>
+		</ul>
 	</div>
 </template>
 
@@ -34,6 +38,7 @@ export default {
         meter: "4/4",
         comment: ""
       },
+      symbols: ["[", "]", "|", "/", "#", ":", "-", "_", "(", ")"],
       meters: ["4/4", "3/4", "6/8"],
       keys: [
         "C",
@@ -128,6 +133,22 @@ export default {
         this.id,
         this.song
       );
+    },
+    insertToEditor: function(symbol) {
+      let editor = document.getElementById("editor");
+      let selectionStartIndex = editor.selectionStart;
+
+      editor.value =
+        editor.value.substring(0, selectionStartIndex) +
+        symbol +
+        editor.value.substring(selectionStartIndex, editor.value.length);
+
+      editor.selectionStart = editor.selectionEnd =
+        selectionStartIndex + symbol.length;
+      editor.focus();
+
+      // To update Vue model
+      editor.dispatchEvent(new Event("input"));
     }
   }
 };

@@ -38,6 +38,15 @@ var SongsService = {
 				errorCallback( error )
 			} );
 	},
+	duplicate: function ( successCallback, errorCallback, id ) {
+		let scope = this;
+
+		scope.getSingle( function ( result ) {
+			let song = result.data;
+
+			scope.save( successCallback, errorCallback, false, song );
+		}, errorCallback, id );
+	},
 	save: function ( successCallback, errorCallback, id, song ) {
 		let url = window.apiHost + '/songs', method = 'post', scope = this;
 

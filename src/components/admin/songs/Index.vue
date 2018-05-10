@@ -47,14 +47,6 @@ export default {
     var scope = this;
 
     this.handlers = {
-      getSuccess: function(result) {
-        SongsService.save(
-          scope.handlers.duplicateSuccess,
-          scope.handlers.error,
-          null,
-          result.data
-        );
-      },
       duplicateSuccess: function(result) {
         let song = result.data;
 
@@ -63,7 +55,7 @@ export default {
           isSuccessMessage: true
         });
 
-        SongsService.get(this.handlers.success, this.handlers.error);
+        SongsService.get(scope.handlers.success, scope.handlers.error);
       },
       deleteSuccess: function(result) {
         scope.$emit("show-message", {
@@ -128,7 +120,7 @@ export default {
       );
     },
     remove: function(song) {
-      if (confirm("Delete " + song.title + " ?")) {
+      if (confirm("Delete " + song.title + "?")) {
         SongsService.delete(
           this.handlers.deleteSuccess,
           this.handlers.error,
@@ -137,11 +129,13 @@ export default {
       }
     },
     duplicate: function(song) {
-      SongsService.getSingle(
-        this.handlers.getSuccess,
-        this.handlers.error,
-        song.id
-      );
+      if (confirm("Duplicate " + song.title + "?")) {
+        SongsService.duplicate(
+          this.handlers.duplicateSuccess,
+          this.handlers.error,
+          song.id
+        );
+      }
     }
   }
 };
