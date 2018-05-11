@@ -36,7 +36,7 @@
 		<div v-if="message" :class="alertClass" role="alert"><span v-html="message"></span><button @click="hideAlert" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
 
 		<div class="container-fluid">
-			<router-view @progress="progress" @show-message="showMessage" @logged-in="updateAuthUser"/>
+			<router-view @show-message="showMessage" @logged-in="updateAuthUser"/>
 		</div>
 	</div>
 </template>
@@ -80,6 +80,29 @@ export default {
       "static/vendor/bootstrap.native/dist/bootstrap-native-v4.min.js"
     );
     document.head.appendChild(bsnScript);
+
+    // Attach progress bar visibility to axios
+    window.axios.interceptors.request.use(
+      function(config) {
+        scope.showProgress = true;
+        return config;
+      },
+      function(error) {
+        scope.showProgress = false;
+        return Promise.reject(error);
+      }
+    );
+
+    axios.interceptors.response.use(
+      function(response) {
+        scope.showProgress = false;
+        return response;
+      },
+      function(error) {
+        scope.showProgress = false;
+        return Promise.reject(error);
+      }
+    );
   },
   methods: {
     updateAuthUser: function() {
@@ -111,7 +134,7 @@ export default {
 <style scoped>
 #overlay {
   position: fixed;
-  background: rgba(255, 255, 255, 0.5);
+  background: white;
   bottom: 0;
   left: 0;
   top: 0;
@@ -123,5 +146,11 @@ export default {
   width: 80%;
   top: 50%;
   left: 10%;
+}
+</style>
+
+<style>
+.breadcrumb {
+  margin-top: 20px;
 }
 </style>

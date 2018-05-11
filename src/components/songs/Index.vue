@@ -3,17 +3,19 @@
 		<h1>{{ msg }}</h1>
 
 		<form v-on:submit.prevent="search()">
-			<input v-model="searchKeyword" type="text" placeholder="Title or artist name">
-			<button type="submit">Search</button>
+			<div class="input-group mb-3">
+				<input class="form-control" v-model="searchKeyword" type="text" placeholder="Title or artist name...">
+				<div class="input-group-append">
+					<button class="btn btn-outline-primary" type="submit">Search</button>
+				</div>
+			</div>			
 		</form>
 
-		<ul>
-			<li v-for="song in songs" :key="song.id">
-				<router-link :to="{ name: 'SongsView', params: { id: song.id, slug: song.slug } }">{{ song.title }} - {{ song.artists }} {{ song.comment ? '(' + song.comment  + ')' : '' }}</router-link>			
-			</li>
-		</ul>
+		<div class="list-group">			
+			<router-link v-for="song in songs" :key="song.id" class="list-group-item list-group-item-action" :to="{ name: 'SongsView', params: { id: song.id, slug: song.slug } }">{{ song.title }} - {{ song.artists }} {{ song.comment ? '(' + song.comment  + ')' : '' }}</router-link>	
+		</div>
 
-		<nav aria-label="Pagination">
+		<nav class="pagination-container" v-if="pages.length > 1" aria-label="Pagination">
 			<ul class="pagination justify-content-center">
 				<li v-for="page in pages" :key="page" class="page-item" :class="{ active : currentPage === page }"><a class="page-link" @click="goToPage(page)" v-html="page"></a></li>
 			</ul>
@@ -53,41 +55,29 @@ export default {
             type: "info"
           });
         }
-
-        scope.$emit("progress", false);
       },
       error: function(error) {
         console.debug(error);
-
-        scope.$emit("progress", false);
       }
     };
   },
   mounted: function() {
-    this.$emit("progress", true);
-
     SongsService.get(this.handlers.success, this.handlers.error);
   },
   methods: {
     search: function() {
-      if (this.searchKeyword) {
-        var scope = this;
+      var scope = this;
 
-        scope.currentPage = 1;
+      scope.currentPage = 1;
 
-        this.$emit("progress", true);
-
-        SongsService.get(
-          this.handlers.success,
-          this.handlers.error,
-          scope.searchKeyword
-        );
-      }
+      SongsService.get(
+        this.handlers.success,
+        this.handlers.error,
+        scope.searchKeyword
+      );
     },
     goToPage: function(page) {
       var scope = this;
-
-      this.$emit("progress", true);
 
       scope.currentPage = page;
 
@@ -104,5 +94,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.pagination-container {
+  margin-top: 20px;
+}
 </style>

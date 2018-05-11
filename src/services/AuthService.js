@@ -1,4 +1,3 @@
-import axios from "axios"
 import 'es6-promise/auto'
 import Cookies from "js-cookie/src/js.cookie"
 
@@ -26,7 +25,7 @@ var AuthService = {
 
 		Cookies.remove( 'token' );
 
-		axios
+		window.axios
 			.post( window.apiHost + "/auth/refresh", {}, config )
 			.then( function ( response ) {
 				Cookies.set( 'token', response.data.access_token );
@@ -43,7 +42,7 @@ var AuthService = {
 			password: password
 		};
 
-		axios
+		window.axios
 			.post( window.apiHost + "/auth/login", data )
 			.then( function ( response ) {
 				Cookies.set( 'token', response.data.access_token );
@@ -55,7 +54,7 @@ var AuthService = {
 					}
 				};
 
-				axios
+				window.axios
 					.post( window.apiHost + "/auth/me", {}, config )
 					.then( function ( response ) {
 						Cookies.set( 'user', response.data );
@@ -78,7 +77,7 @@ var AuthService = {
 			}
 		};
 
-		axios
+		window.axios
 			.post( window.apiHost + "/auth/logout", {}, config )
 			.then( function ( response ) {
 				Cookies.remove( 'token' );

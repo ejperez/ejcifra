@@ -1,30 +1,47 @@
 <template>
-	<div class="index">	  	
-		<nav aria-label="breadcrumb">
+	<div class="index">		
+	
+		<nav aria-label="breadcrumb" class="hidden-print">
 			<ol class="breadcrumb">
 				<router-link class="breadcrumb-item" :to="{ name: 'SongsIndex' }">Songs</router-link>
 				<li class="breadcrumb-item active" aria-current="page">{{ song.title }}</li>
 			</ol>
 		</nav>
 
-		<div>
-			<label>Change key</label>
-			<select v-model="newKey" v-on:change="transpose()">
-			<option v-for="key in keys" :value="key" :key="key">{{ key }}</option>
-			</select>
-			<button type="button" v-on:click="reset()">Reset</button>
+		<div class="row">
+			<div class="col-md-12 song-container">
+				<h1 class="song-title">
+					{{ song.title }} <span v-if="song.artists">-</span> {{ song.artists }}
+				</h1>
+
+				<div class="song-details">
+					BPM: <span>{{ song.bpm }}</span>
+					Meter: <span>{{ song.meter }}</span>
+					Key: <span>{{ newKey || song.key }}</span>
+					<template v-if="song.comment">Comments: <span>{{ song.comment }}</span></template>
+				</div>
+			</div>			
 		</div>
-		<div>{{ song.title }} <span v-if="song.artists">-</span> {{ song.artists }}</div>
-		<div>
-			<ul>
-			<li>Key: {{ newKey || song.key }}</li>
-			<li>BPM: {{ song.bpm }}</li>
-			<li>Meter: {{ song.meter }}</li>
-			<li v-if="song.commet">{{ song.comment }}</li>
-			</ul>
+
+		<div class="row hidden-print toolbar">
+			<div class="col-md-12">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<label class="input-group-text">Change key</label>
+					</div>
+					<select v-model="newKey" v-on:change="transpose()">
+						<option v-for="key in keys" :value="key" :key="key">{{ key }}</option>
+					</select>
+					<div class="input-group-append">
+						<button class="btn btn-outline-secondary" type="button" @click="reset()">Reset</button>
+						<button class="btn btn-outline-primary" type="button" onclick="print()">Print</button>
+					</div>
+				</div>
+			</div>
 		</div>
-			<div v-html="content"></div>
-		</div>
+
+		<div v-html="content"></div>
+	</div>
 </template>
 
 <script>
@@ -119,5 +136,29 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.song-container {
+  font-family: "Inconsolata", monospace;
+}
 
+.song-title {
+  font-size: 30px;
+  margin: 0;
+}
+.song-details {
+  border-top: solid thin black;
+}
+
+.song-details span {
+  margin-right: 20px;
+}
+
+.toolbar {
+  margin-top: 20px;
+}
+
+@media print {
+  .hidden-print {
+    display: none;
+  }
+}
 </style>

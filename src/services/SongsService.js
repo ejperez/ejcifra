@@ -1,4 +1,3 @@
-import axios from "axios"
 import "es6-promise/auto"
 import Cookies from "js-cookie/src/js.cookie"
 import AuthService from "@/services/AuthService";
@@ -14,7 +13,7 @@ var SongsService = {
 		return localStorage.removeItem( 'songDraft' );
 	},
 	get: function ( successCallback, errorCallback, search, page ) {
-		axios
+		window.axios
 			.get( window.apiHost + "/songs", {
 				params: {
 					search: search,
@@ -29,7 +28,7 @@ var SongsService = {
 			} );
 	},
 	getSingle: function ( successCallback, errorCallback, id ) {
-		axios
+		window.axios
 			.get( window.apiHost + "/songs/" + id )
 			.then( function ( response ) {
 				successCallback( response );
@@ -55,7 +54,7 @@ var SongsService = {
 			method = 'put';
 		}
 
-		axios( {
+		window.axios( {
 			url: url,
 			data: song,
 			method: method,
@@ -85,7 +84,7 @@ var SongsService = {
 			}
 		};
 
-		axios
+		window.axios
 			.delete( window.apiHost + "/songs/" + id, config )
 			.then( function ( response ) {
 				successCallback( response );
