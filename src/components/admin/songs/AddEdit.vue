@@ -1,19 +1,48 @@
 <template>
-	<div class="index">
-	  	<ul>
-        	<li><router-link :to="{ name: 'AdminSongsIndex' }">Admin Songs</router-link></li>
-        	<li v-if="id">{{ song.title }}</li>			
-	  	</ul>
+	<div class="index">	  	
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><router-link :to="{ name: 'AdminSongsIndex' }">Admin Songs</router-link></li>				
+				<li class="breadcrumb-item active" aria-current="page">{{ song.title }}</li>
+			</ol>
+		</nav>
 
 		<form v-on:submit.prevent="save()">
-			Title: <input required type="text" v-model="song.title"><br>
-			Artists: <input type="text" v-model="song.artists"><br>
-			Key: <select v-model="song.key"><option v-for="key in keys" :key="key" :value="key" v-html="key"></option></select><br>
-			Meter: <select v-model="song.meter"><option v-for="meter in meters" :key="meter" :value="meter" v-html="meter"></option></select><br>
-			BPM: <input required type="number" v-model="song.bpm"><br>
-			Comment: <input type="text" v-model="song.comment"><br>
-			Body:<br><textarea id="editor" required v-model="song.body" cols="30" rows="10"></textarea><br>
-			<button type="submit">Save</button>
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="">Title</label>
+					<input class="form-control" required type="text" v-model="song.title">
+				</div>
+				<div class="form-group col-md-6">
+					<label for="">Artist(s)</label>
+					<input class="form-control" type="text" v-model="song.artists">
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-3">
+					<label for="">Key</label>
+					<select class="form-control" v-model="song.key"><option v-for="key in keys" :key="key" :value="key" v-html="key"></option></select>
+				</div>
+				<div class="form-group col-md-3">
+					<label for="">Meter</label>
+					<select class="form-control" v-model="song.meter"><option v-for="meter in meters" :key="meter" :value="meter" v-html="meter"></option></select>
+				</div>
+				<div class="form-group col-md-3">
+					<label for="">BPM</label>
+					<input class="form-control" required type="number" v-model="song.bpm">
+				</div>
+				<div class="form-group col-md-3">
+					<label for="">Comment</label>
+					<input class="form-control" type="text" v-model="song.comment">
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col">
+					<label for="">Body</label>
+					<textarea class="form-control" id="editor" required v-model="song.body" cols="30" rows="10"></textarea>
+				</div>
+			</div>			
+			<button class="btn btn-primary" type="submit">Save</button>
 		</form>
 
 		<ul>

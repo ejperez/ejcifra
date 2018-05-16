@@ -55,6 +55,16 @@ const router = new Router( {
 } )
 
 router.beforeEach( ( to, from, next ) => {
+
+	// Collapse mobile menu always
+	if ( document.querySelectorAll( '.navbar-toggler.collapsed' ).length === 0 ) {
+		let hamburger = document.getElementById( 'hamburger' )
+
+		if ( hamburger !== null ) {
+			hamburger.click();
+		}
+	}	
+
 	if ( to.matched.some( record => record.meta.requiresAuth ) ) {
 		if ( AuthService.getLoggedInUser() ) {
 			next();

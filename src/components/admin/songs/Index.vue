@@ -2,30 +2,35 @@
 	<div class="index">
 		<h1>{{ msg }}</h1>
 
-		<ul>
-			<li><router-link :to="{ name: 'AdminSongsAdd' }">Add new</router-link></li>
-		</ul>
-
 		<form v-on:submit.prevent="search()">
-			<input v-model="searchKeyword" type="text" placeholder="Title or artist name">
-			<button type="submit">Search</button>
+			<div class="input-group mb-3">
+				<input class="form-control" v-model="searchKeyword" type="text" placeholder="Title or artist name...">
+				<div class="input-group-append">
+					<button class="btn btn-outline-primary" type="submit">Search</button>
+				</div>
+			</div>			
 		</form>
 
-		<ul>
-			<li v-for="song in songs" :key="song.id">
-				<span>{{ song.title }} <span v-if="song.artists">-</span> {{ song.artists }} {{ song.comment ? '(' + song.comment  + ')' : '' }}</span>
-				<router-link :to="{ name: 'AdminSongsEdit', params: { id: song.id, slug: song.slug } }">Edit</router-link>
-				<button @click="duplicate(song)" type="button">Duplicate</button>
-				<button @click="remove(song)" type="button">Delete</button>
-			</li>
-		</ul>
+		<div class="list-group">
+			<div v-for="song in songs" :key="song.id" class="list-group-item">
+				<div class="row">
+					<div class="col-md-9">
+						<span class="song-title">{{ song.title }} <span v-if="song.artists">-</span> {{ song.artists }} {{ song.comment ? '(' + song.comment  + ')' : '' }}</span>
+					</div>
+					<div class="col-md-3">
+						<router-link class="btn btn-light" :to="{ name: 'AdminSongsEdit', params: { id: song.id, slug: song.slug } }">Edit</router-link>
+						<button class="btn btn-light" @click="duplicate(song)" type="button">Duplicate</button>
+						<button class="btn btn-light" @click="remove(song)" type="button">Delete</button>
+					</div>
+				</div>
+			</div>			
+		</div>
 
-		<ul>
-			<li v-for="page in pages" :key="page">
-				<button :disabled="currentPage === page" v-on:click="goToPage(page)" type="button">{{ page }}</button>
-			</li>
-		</ul>
-		
+		<nav class="pagination-container" v-if="pages.length > 1" aria-label="Pagination">
+			<ul class="pagination justify-content-center">
+				<li v-for="page in pages" :key="page" class="page-item" :class="{ active : currentPage === page }"><a class="page-link" @click="goToPage(page)" v-html="page"></a></li>
+			</ul>
+		</nav>		
 	</div>
 </template>
 
@@ -36,7 +41,7 @@ export default {
   name: "AdminSongsIndex",
   data: function() {
     return {
-      msg: "Admin Songs",
+      msg: "Songs",
       songs: [],
       searchKeyword: "",
       pages: [],
@@ -143,5 +148,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.pagination-container {
+  margin-top: 20px;
+}
+.song-title {
+  font-size: 20px;
+}
 </style>

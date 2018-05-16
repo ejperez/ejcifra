@@ -3,22 +3,29 @@
 
 		<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
 			<a class="navbar-brand" href="#">ejcifra</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<button id="hamburger" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item"></li>
-					<li class="nav-item"></li>
+				<ul class="navbar-nav ml-auto">					
 					<template v-if="user">
 						<li class="nav-item">
-							<a class="nav-link disabled" href="#" v-html="user.name"></a>
+							<router-link class="nav-link" :to="{ name: 'AdminSongsIndex' }">Songs</router-link>
+						</li>
+						<li class="nav-item">
+							<router-link class="nav-link" :to="{ name: 'AdminSongsAdd' }">+ Add Song</router-link>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link disabled" href="#">User: {{ user.name }}</a>
 						</li>
 						<li class="nav-item">
 							<a @click="logout()" class="nav-link" href="#">Log out</a>
 						</li>
 					</template>
 					<template v-else>
+						<li class="nav-item">
+							<router-link class="nav-link" :to="{ name: 'SongsIndex' }">Songs</router-link>
+						</li>
 						<li class="nav-item">
 							<router-link class="nav-link" :to="{ name: 'AuthLogin' }">Log in</router-link>
 						</li>
@@ -96,10 +103,12 @@ export default {
     axios.interceptors.response.use(
       function(response) {
         scope.showProgress = false;
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
         return response;
       },
       function(error) {
         scope.showProgress = false;
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
         return Promise.reject(error);
       }
     );

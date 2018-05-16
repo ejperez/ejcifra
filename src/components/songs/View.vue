@@ -1,9 +1,8 @@
 <template>
-	<div class="index">		
-	
+	<div class="index">
 		<nav aria-label="breadcrumb" class="hidden-print">
 			<ol class="breadcrumb">
-				<router-link class="breadcrumb-item" :to="{ name: 'SongsIndex' }">Songs</router-link>
+				<li class="breadcrumb-item"><router-link class="breadcrumb-item" :to="{ name: 'SongsIndex' }">Songs</router-link></li>				
 				<li class="breadcrumb-item active" aria-current="page">{{ song.title }}</li>
 			</ol>
 		</nav>
@@ -80,7 +79,7 @@ export default {
         "Bb",
         "B"
       ],
-      neyKey: null
+      newKey: null
     };
   },
   created: function() {

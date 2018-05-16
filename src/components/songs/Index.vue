@@ -97,4 +97,7 @@ export default {
 .pagination-container {
   margin-top: 20px;
 }
+.list-group-item {
+	font-weight: bold;
+}
 </style>
