@@ -12,7 +12,7 @@
 		</form>
 
 		<div class="list-group">			
-			<router-link v-for="song in songs" :key="song.id" class="list-group-item list-group-item-action" :to="{ name: 'SongsView', params: { id: song.id, slug: song.slug } }">{{ song.title }} - {{ song.artists }} {{ song.comment ? '(' + song.comment  + ')' : '' }}</router-link>	
+			<router-link v-for="song in songs" :key="song.id" class="list-group-item list-group-item-action" :to="{ name: 'SongsView', params: { id: song.id, slug: song.slug } }">{{ song.title }} - {{ song.artists }} {{ song.comment ? '(' + song.comment  + ')' : '' }}</router-link>
 		</div>
 
 		<nav class="pagination-container" v-if="pages.length > 1" aria-label="Pagination">

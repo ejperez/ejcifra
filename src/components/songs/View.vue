@@ -32,7 +32,7 @@
 						<option v-for="key in keys" :value="key" :key="key">{{ key }}</option>
 					</select>
 					<div class="input-group-append">
-						<button class="btn btn-outline-secondary" type="button" @click="reset()">Reset</button>
+						<button class="btn btn-outline-secondary" type="button" @click="reset()">Reset key</button>
 						<button class="btn btn-outline-primary" type="button" onclick="print()">Print</button>
 					</div>
 				</div>
@@ -89,7 +89,13 @@ export default {
       success: function(result) {
         if (result.data) {
           scope.song = result.data;
-          scope.content = ChordPlus.getHTML(scope.song.body);
+
+          if (scope.$route.query.hasOwnProperty("key")) {
+            scope.newKey = scope.$route.query.key;
+            scope.transpose();
+          } else {
+            scope.content = ChordPlus.getHTML(scope.song.body);
+          }
         } else {
           scope.$emit("show-message", {
             message: "No songs matching your search. Please try again.",
@@ -120,6 +126,19 @@ export default {
           this.song.key,
           this.newKey
         );
+
+        if (this.song.key !== this.newKey) {
+          this.$router.push({
+            name: "SongsView",
+            params: {
+              id: this.song.id,
+              slug: this.song.slug
+            },
+            query: {
+              key: this.newKey
+            }
+          });
+        }
       }
     },
     reset: function() {
@@ -127,6 +146,14 @@ export default {
         this.newKey = null;
 
         this.content = ChordPlus.getHTML(this.song.body, this.song.key);
+
+        this.$router.push({
+          name: "SongsView",
+          params: {
+            id: this.song.id,
+            slug: this.song.slug
+          }
+        });
       }
     }
   }

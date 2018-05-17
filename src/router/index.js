@@ -42,6 +42,7 @@ const router = new Router( {
 			path: '/admin/songs/add',
 			name: 'AdminSongsAdd',
 			component: AdminSongsAddEdit,
+			props: true,
 			meta: { requiresAuth: true }
 		},
 		{
@@ -57,7 +58,7 @@ const router = new Router( {
 router.beforeEach( ( to, from, next ) => {
 
 	// Collapse mobile menu always
-	if ( document.querySelectorAll( '.navbar-toggler.collapsed' ).length === 0 ) {
+	if ( document.querySelectorAll( '.navbar-collapse.collapse.show' ).length !== 0 ) {
 		let hamburger = document.getElementById( 'hamburger' )
 
 		if ( hamburger !== null ) {

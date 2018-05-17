@@ -14,10 +14,11 @@
 		<div class="list-group">
 			<div v-for="song in songs" :key="song.id" class="list-group-item">
 				<div class="row">
-					<div class="col-md-9">
+					<div class="col-md-8">
 						<span class="song-title">{{ song.title }} <span v-if="song.artists">-</span> {{ song.artists }} {{ song.comment ? '(' + song.comment  + ')' : '' }}</span>
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-4">
+						<router-link class="btn btn-light" :to="{ name: 'SongsView', params: { id: song.id, slug: song.slug } }">View</router-link>
 						<router-link class="btn btn-light" :to="{ name: 'AdminSongsEdit', params: { id: song.id, slug: song.slug } }">Edit</router-link>
 						<button class="btn btn-light" @click="duplicate(song)" type="button">Duplicate</button>
 						<button class="btn btn-light" @click="remove(song)" type="button">Delete</button>

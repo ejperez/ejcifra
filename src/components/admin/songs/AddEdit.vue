@@ -3,7 +3,7 @@
 		<nav aria-label="breadcrumb">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item"><router-link :to="{ name: 'AdminSongsIndex' }">Admin Songs</router-link></li>				
-				<li class="breadcrumb-item active" aria-current="page">{{ song.title }}</li>
+				<li class="breadcrumb-item active" aria-current="page">{{ song.title || 'New Song' }}</li>
 			</ol>
 		</nav>
 
@@ -38,35 +38,46 @@
 			</div>
 			<div class="form-row">
 				<div class="form-group col">
+					<div v-if="parseErrorMessage" class="alert alert-danger" role="alert"><span v-html="parseErrorMessage"></span><button @click="parseErrorMessage = null" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+
 					<label for="">Body</label>
 					<textarea class="form-control" id="editor" required v-model="song.body" cols="30" rows="10"></textarea>
-				</div>
-			</div>			
-			<button class="btn btn-primary" type="submit">Save</button>
-		</form>
 
-		<ul>
-			<li v-for="symbol in symbols" :key="symbol"><button type="button" @click="insertToEditor(symbol)" v-html="symbol"></button></li>
-		</ul>
+					<div class="container-fluid js-toolbar-mobile-helper d-block d-sm-none">
+						<div class="row">
+							<div class="col-md-12 text-center">
+								<div class="btn-group" role="group" aria-label="First group">
+									<button v-for="symbol in symbols" :key="symbol" type="button" class="btn btn-gray" @click="insertToEditor(symbol)" v-html="symbol"></button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<button class="btn btn-primary" type="submit">Save</button>
+			<router-link v-if="id" class="btn btn-secondary" :to="{ name: 'SongsView', params: { id: song.id, slug: song.slug } }">View</router-link>
+		</form>		
 	</div>
 </template>
 
 <script>
 import SongsService from "@/services/SongsService";
 
+var defaultSong = {
+  title: "",
+  artists: "",
+  key: "C",
+  bpm: 100,
+  meter: "4/4",
+  comment: ""
+};
+
 export default {
   name: "AdminSongsAddEdit",
   props: ["id", "slug"],
   data: function() {
     return {
-      song: {
-        title: "",
-        artists: "",
-        key: "C",
-        bpm: 100,
-        meter: "4/4",
-        comment: ""
-      },
+      song: defaultSong,
       symbols: ["[", "]", "|", "/", "#", ":", "-", "_", "(", ")"],
       meters: ["4/4", "3/4", "6/8"],
       keys: [
@@ -88,8 +99,17 @@ export default {
         "Bb",
         "B"
       ],
-      neyKey: null
+      neyKey: null,
+      isEditorFocused: false,
+      parseErrorMessage: null
     };
+  },
+  watch: {
+    id: function(newId, oldId) {
+      if (!newId) {
+        this.song = defaultSong;
+      }
+    }
   },
   created: function() {
     var scope = this;
@@ -136,6 +156,13 @@ export default {
         });
       }
     };
+
+    let chordPlusScript = document.createElement("script");
+    chordPlusScript.setAttribute(
+      "src",
+      "static/vendor/chord-plus/dist/chord-plus.min.js"
+    );
+    document.head.appendChild(chordPlusScript);
   },
   mounted: function() {
     if (this.id) {
@@ -154,14 +181,22 @@ export default {
   },
   methods: {
     save: function() {
-      SongsService.saveDraft(JSON.stringify(this.song));
+      // Check for source code errors
+      try {
+        ChordPlus.getHTML(this.song.body, this.song.key);
+        this.parseErrorMessage = null;
 
-      SongsService.save(
-        this.handlers.success,
-        this.handlers.error,
-        this.id,
-        this.song
-      );
+        SongsService.saveDraft(JSON.stringify(this.song));
+
+        SongsService.save(
+          this.handlers.success,
+          this.handlers.error,
+          this.id,
+          this.song
+        );
+      } catch (exception) {
+        this.parseErrorMessage = exception.message;
+      }
     },
     insertToEditor: function(symbol) {
       let editor = document.getElementById("editor");
@@ -185,5 +220,24 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#editor {
+  font-family: "Inconsolata", monospace;
+  font-size: 18px;
+  line-height: 25px;
+  resize: none;
+}
 
+.js-toolbar-mobile-helper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  height: 45px;
+  width: 100%;
+}
+.js-toolbar-mobile-helper .buttons {
+  overflow: auto;
+  white-space: nowrap;
+  text-align: center;
+}
 </style>

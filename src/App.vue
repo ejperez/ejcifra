@@ -40,7 +40,7 @@
 			</div>
 		</div>
 
-		<div v-if="message" :class="alertClass" role="alert"><span v-html="message"></span><button @click="hideAlert" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+		<div v-if="message" :class="alertClass" role="alert"><span v-html="message"></span><button @click="message = null" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
 
 		<div class="container-fluid">
 			<router-view @show-message="showMessage" @logged-in="updateAuthUser"/>
@@ -129,9 +129,6 @@ export default {
         scope.message = false;
         scope.messageType = "success";
       }, 10000);
-    },
-    hideAlert: function() {
-      this.message = false;
     },
     progress: function(showProgress) {
       this.showProgress = showProgress;
