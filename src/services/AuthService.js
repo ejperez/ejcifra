@@ -77,12 +77,12 @@ var AuthService = {
 			}
 		};
 
+		Cookies.remove( 'token' );
+		Cookies.remove( 'user' );
+
 		window.axios
 			.post( window.apiHost + "/auth/logout", {}, config )
-			.then( function ( response ) {
-				Cookies.remove( 'token' );
-				Cookies.remove( 'user' );
-				
+			.then( function ( response ) {								
 				successCallback( response );
 			} )
 			.catch( function ( error ) {
