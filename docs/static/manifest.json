@@ -4,8 +4,7 @@
 	"theme_color": "#00ACAC",
 	"background_color": "#ffffff",
 	"display": "browser",
-	"scope": "#/",
-	"start_url": "#/",
+	"start_url": "/ejperez/ejcifra/#/",
 	"icons": [
 		{
 			"src": "icons/Icon-36.png",
