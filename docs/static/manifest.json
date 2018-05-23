@@ -3,9 +3,8 @@
 	"short_name": "Cifra",
 	"theme_color": "#00ACAC",
 	"background_color": "#ffffff",
-	"display": "fullscreen",
-	"scope": "/",
-	"start_url": "/",
+	"display": "standalone",
+	"start_url": "/ejcifra/#/",
 	"icons": [
 		{
 			"src": "icons/Icon-36.png",
