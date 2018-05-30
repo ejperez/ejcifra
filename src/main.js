@@ -10,7 +10,7 @@ Vue.config.productionTip = false;
 if ( process.env.NODE_ENV === 'production' ) {
 	window.apiHost = 'https://ejcifra-api.herokuapp.com/api'
 } else {
-	window.apiHost = 'http://ej.local/api'
+	window.apiHost = 'http://ejcifra-api/api'
 }
 
 window.axios = axios;

@@ -1,6 +1,6 @@
 <template>
 	<div class="index">
-		<nav aria-label="breadcrumb" class="hidden-print">
+		<nav aria-label="breadcrumb" class="hidden-print d-none d-sm-block">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item"><router-link class="breadcrumb-item" :to="{ name: 'SongsIndex' }">Songs</router-link></li>				
 				<li class="breadcrumb-item active" aria-current="page">{{ song.title }}</li>

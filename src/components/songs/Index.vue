@@ -98,6 +98,6 @@ export default {
   margin-top: 20px;
 }
 .list-group-item {
-	font-weight: bold;
+	font-size: 18px;
 }
 </style>

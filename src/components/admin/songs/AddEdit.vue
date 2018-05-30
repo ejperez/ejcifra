@@ -1,6 +1,6 @@
 <template>
-	<div class="index">	  	
-		<nav aria-label="breadcrumb">
+	<div class="index">
+		<nav class="d-none d-sm-block" aria-label="breadcrumb">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item"><router-link :to="{ name: 'AdminSongsIndex' }">Admin Songs</router-link></li>				
 				<li class="breadcrumb-item active" aria-current="page">{{ song.title || 'New Song' }}</li>
@@ -41,16 +41,15 @@
 					<div v-if="parseErrorMessage" class="alert alert-danger" role="alert"><span v-html="parseErrorMessage"></span><button @click="parseErrorMessage = null" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
 
 					<label for="">Body</label>
-					<textarea class="form-control" id="editor" required v-model="song.body" cols="30" rows="10"></textarea>
-
-					<div class="container-fluid js-toolbar-mobile-helper d-block d-sm-none">
-						<div class="row">
-							<div class="col-md-12 text-center">
-								<div class="btn-group" role="group" aria-label="First group">
-									<button v-for="symbol in symbols" :key="symbol" type="button" class="btn btn-gray" @click="insertToEditor(symbol)" v-html="symbol"></button>
-								</div>
-							</div>
-						</div>
+					<textarea class="form-control" id="editor" required v-model="song.body" cols="30" rows="10"></textarea>					
+				</div>
+			</div>
+			<div class="container-fluid js-toolbar-mobile-helper d-block d-sm-none">
+				<div class="row">
+					<div class="col-md-12 text-center">
+						<!-- <div class="btn-group" role="group" aria-label="First group"> -->
+							<button v-for="symbol in symbols" :key="symbol" type="button" class="btn btn-outline-secondary" @click="insertToEditor(symbol)" v-html="symbol"></button>
+						<!-- </div> -->
 					</div>
 				</div>
 			</div>
@@ -228,12 +227,7 @@ export default {
 }
 
 .js-toolbar-mobile-helper {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  z-index: 1;
-  height: 45px;
-  width: 100%;
+  margin-bottom: 20px;
 }
 .js-toolbar-mobile-helper .buttons {
   overflow: auto;

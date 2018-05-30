@@ -14,14 +14,17 @@
 		<div class="list-group">
 			<div v-for="song in songs" :key="song.id" class="list-group-item">
 				<div class="row">
-					<div class="col-md-8">
+					<div class="col">
 						<span class="song-title">{{ song.title }} <span v-if="song.artists">-</span> {{ song.artists }} {{ song.comment ? '(' + song.comment  + ')' : '' }}</span>
-					</div>
-					<div class="col-md-4">
-						<router-link class="btn btn-light" :to="{ name: 'SongsView', params: { id: song.id, slug: song.slug } }">View</router-link>
-						<router-link class="btn btn-light" :to="{ name: 'AdminSongsEdit', params: { id: song.id, slug: song.slug } }">Edit</router-link>
-						<button class="btn btn-light" @click="duplicate(song)" type="button">Duplicate</button>
-						<button class="btn btn-light" @click="remove(song)" type="button">Delete</button>
+						<div class="btn-group" role="group">
+							<button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
+							<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+								<router-link class="dropdown-item" :to="{ name: 'SongsView', params: { id: song.id, slug: song.slug } }">View</router-link>
+								<router-link class="dropdown-item" :to="{ name: 'AdminSongsEdit', params: { id: song.id, slug: song.slug } }">Edit</router-link>
+								<button class="dropdown-item" @click="duplicate(song)" type="button">Duplicate</button>
+								<button class="dropdown-item" @click="remove(song)" type="button">Delete</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>			
@@ -153,6 +156,6 @@ export default {
   margin-top: 20px;
 }
 .song-title {
-  font-size: 20px;
+  font-size: 18px;
 }
 </style>

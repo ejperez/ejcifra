@@ -1,29 +1,31 @@
 <template>
-	<div id="app">		
-
+	<div id="app">
 		<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
 			<router-link class="navbar-brand" :to="{ name: 'SongsIndex' }">
 				<img src="static/icons/Icon-36.png" width="36" height="36" alt="">
 				<span>EJCIFRA</span>
 			</router-link>
+
 			<button id="hamburger" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
+
 			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav ml-auto">					
+				<ul class="navbar-nav ml-auto">
 					<template v-if="user">
-						<li class="nav-item">
-							<router-link class="nav-link" :to="{ name: 'AdminSongsIndex' }">Songs</router-link>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Songs</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<router-link class="dropdown-item" :to="{ name: 'AdminSongsIndex' }">View All</router-link>
+								<router-link class="dropdown-item" :to="{ name: 'AdminSongsAdd' }">Add New</router-link>
+							</div>
 						</li>
-						<li class="nav-item">
-							<router-link class="nav-link" :to="{ name: 'AdminSongsAdd' }">+ Add Song</router-link>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link disabled" href="#">User: {{ user.name }}</a>
-						</li>
-						<li class="nav-item">
-							<a @click="logout()" class="nav-link" href="#">Log out</a>
-						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Welcome, {{ user.name }}</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a @click="logout()" class="dropdown-item" href="#">Log out</a>
+							</div>
+						</li>						
 					</template>
 					<template v-else>
 						<li class="nav-item">
@@ -52,6 +54,7 @@
 <script>
 import AuthService from "@/services/AuthService";
 import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.js";
 
 export default {
   name: "App",
@@ -82,13 +85,6 @@ export default {
         scope.$router.push({ name: "AuthLogin" });
       }
     };
-
-    let bsnScript = document.createElement("script");
-    bsnScript.setAttribute(
-      "src",
-      "static/vendor/bootstrap.native/dist/bootstrap-native-v4.min.js"
-    );
-    document.head.appendChild(bsnScript);
 
     // Attach progress bar visibility to axios
     window.axios.interceptors.request.use(
