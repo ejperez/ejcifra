@@ -85,6 +85,13 @@ export default {
   created: function() {
     var scope = this;
 
+    let chordPlusScript = document.createElement("script");
+    chordPlusScript.setAttribute(
+      "src",
+      "static/vendor/chord-plus/dist/chord-plus.min.js"
+    );
+    document.head.appendChild(chordPlusScript);
+
     this.handlers = {
       success: function(result) {
         if (result.data) {
@@ -114,13 +121,6 @@ export default {
         console.debug(error);
       }
     };
-
-    let chordPlusScript = document.createElement("script");
-    chordPlusScript.setAttribute(
-      "src",
-      "static/vendor/chord-plus/dist/chord-plus.min.js"
-    );
-    document.head.appendChild(chordPlusScript);
   },
   mounted: function() {
     SongsService.getSingle(this.handlers.success, this.handlers.error, this.id);
