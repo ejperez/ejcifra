@@ -5,14 +5,14 @@
 	"author": "EJ Perez <idyey04@gmail.com>",
 	"private": true,
 	"scripts": {
-		"tip": "Watch does not work in VM, run this in a terminal instead to run auto-compile: find -type f -exec touch {} +",
 		"dev": "webpack-dev-server --port 3000 --host 0.0.0.0 --inline --progress --config build/webpack.dev.conf.js",
 		"start": "npm run dev",
 		"unit": "jest --config test/unit/jest.conf.js --coverage",
 		"e2e": "node test/e2e/runner.js",
 		"test": "npm run unit && npm run e2e",
 		"lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
-		"build": "node build/build.js"
+		"build": "node build/build.js",
+		"build-sw": "node build/build-sw.js"
 	},
 	"dependencies": {
 		"jquery": "^3.3.1",

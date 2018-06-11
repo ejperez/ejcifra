@@ -44,12 +44,10 @@
 					<textarea class="form-control" id="editor" required v-model="song.body" cols="30" rows="10"></textarea>					
 				</div>
 			</div>
-			<div class="container-fluid js-toolbar-mobile-helper d-block d-sm-none">
+			<div class="js-toolbar-mobile-helper d-block d-sm-none">
 				<div class="row">
-					<div class="col-md-12 text-center">
-						<!-- <div class="btn-group" role="group" aria-label="First group"> -->
-							<button v-for="symbol in symbols" :key="symbol" type="button" class="btn btn-outline-secondary" @click="insertToEditor(symbol)" v-html="symbol"></button>
-						<!-- </div> -->
+					<div class="col-md-12 text-center">						
+						<button v-for="symbol in symbols" :key="symbol" type="button" class="btn btn-outline-secondary" @click="insertToEditor(symbol)" v-html="symbol"></button>
 					</div>
 				</div>
 			</div>
@@ -227,7 +225,8 @@ export default {
 }
 
 .js-toolbar-mobile-helper {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  margin-top: -16px;
 }
 .js-toolbar-mobile-helper .buttons {
   overflow: auto;

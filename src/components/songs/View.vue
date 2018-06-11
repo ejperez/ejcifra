@@ -94,7 +94,14 @@ export default {
             scope.newKey = scope.$route.query.key;
             scope.transpose();
           } else {
-            scope.content = ChordPlus.getHTML(scope.song.body);
+            try {
+              scope.content = ChordPlus.getHTML(scope.song.body);
+            } catch (exception) {
+              scope.$emit("show-message", {
+                message: exception.message,
+                type: "danger"
+              });
+            }
           }
         } else {
           scope.$emit("show-message", {
@@ -121,11 +128,18 @@ export default {
   methods: {
     transpose: function() {
       if (this.song) {
-        this.content = ChordPlus.getHTML(
-          this.song.body,
-          this.song.key,
-          this.newKey
-        );
+        try {
+          this.content = ChordPlus.getHTML(
+            this.song.body,
+            this.song.key,
+            this.newKey
+          );
+        } catch (exception) {
+          scope.$emit("show-message", {
+            message: exception.message,
+            type: "danger"
+          });
+        }
 
         if (this.song.key !== this.newKey) {
           this.$router.push({
@@ -145,7 +159,14 @@ export default {
       if (this.song) {
         this.newKey = null;
 
-        this.content = ChordPlus.getHTML(this.song.body, this.song.key);
+        try {
+          this.content = ChordPlus.getHTML(this.song.body, this.song.key);
+        } catch (exception) {
+          scope.$emit("show-message", {
+            message: exception.message,
+            type: "danger"
+          });
+        }
 
         this.$router.push({
           name: "SongsView",
