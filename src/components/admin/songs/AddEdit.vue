@@ -153,13 +153,6 @@ export default {
         });
       }
     };
-
-    let chordPlusScript = document.createElement("script");
-    chordPlusScript.setAttribute(
-      "src",
-      "static/vendor/chord-plus/dist/chord-plus.min.js"
-    );
-    document.head.appendChild(chordPlusScript);
   },
   mounted: function() {
     if (this.id) {

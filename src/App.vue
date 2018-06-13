@@ -110,6 +110,14 @@ export default {
         return Promise.reject(error);
       }
     );
+
+    // include ChordPlus
+    let chordPlusScript = document.createElement("script");
+    chordPlusScript.setAttribute(
+      "src",
+      "static/vendor/chord-plus/dist/chord-plus.min.js"
+    );
+    document.head.appendChild(chordPlusScript);
   },
   methods: {
     updateAuthUser: function() {

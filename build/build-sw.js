@@ -15,9 +15,16 @@ var walkSync = function ( dir, filelist ) {
 	return filelist;
 };
 
-var filenames = walkSync( 'docs' ).map( file => '"' + file.replace( 'docs\\', '' ) + '"' ).join( ',' );
+var filenames = walkSync( 'docs' ).map( file => {
 
-var swContent = '\'use strict\';importScripts(\'static\\sw-toolbox.js\'); toolbox.precache([FILES]); toolbox.router.get(\'/*\', toolbox.networkFirst, { networkTimeoutSeconds: 5});';
+	if ( file.indexOf( 'index.html' ) !== -1 ) {
+		return '"/index.html"';
+	} else {
+		return '"' + file.replace( /\\/g, '/' ).replace( 'docs/', '' ).replace( 'static/', '' ) + '"';
+	}
+} ).join( ',' );
+
+var swContent = '(function(){\'use strict\';importScripts(\'sw-toolbox.js\'); toolbox.precache([FILES]); toolbox.router.get(\'/*\', toolbox.networkFirst, { networkTimeoutSeconds: 5});})();';
 
 swContent = swContent.replace( 'FILES', filenames );
 

@@ -83,14 +83,7 @@ export default {
     };
   },
   created: function() {
-    var scope = this;
-
-    let chordPlusScript = document.createElement("script");
-    chordPlusScript.setAttribute(
-      "src",
-      "static/vendor/chord-plus/dist/chord-plus.min.js"
-    );
-    document.head.appendChild(chordPlusScript);
+    var scope = this;    
 
     this.handlers = {
       success: function(result) {
