@@ -26,7 +26,7 @@ new Vue( {
 /* Register the service worker */
 if ( 'serviceWorker' in navigator ) {
 	window.addEventListener( 'load', function () {
-		navigator.serviceWorker.register( 'static/sw.js' ).then( 
+		navigator.serviceWorker.register( 'static/sw.js' ).then(
 			function ( registration ) {
 				// Registration was successful
 				console.log( 'ServiceWorker registration successful with scope: ', registration.scope );
@@ -37,3 +37,11 @@ if ( 'serviceWorker' in navigator ) {
 			} );
 	} );
 }
+
+// include ChordPlus
+let chordPlusScript = document.createElement( "script" );
+chordPlusScript.setAttribute(
+	"src",
+	"static/vendor/chord-plus/dist/chord-plus.min.js"
+);
+document.head.appendChild( chordPlusScript );

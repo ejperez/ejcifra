@@ -109,15 +109,7 @@ export default {
         document.body.scrollTop = document.documentElement.scrollTop = 0;
         return Promise.reject(error);
       }
-    );
-
-    // include ChordPlus
-    let chordPlusScript = document.createElement("script");
-    chordPlusScript.setAttribute(
-      "src",
-      "static/vendor/chord-plus/dist/chord-plus.min.js"
-    );
-    document.head.appendChild(chordPlusScript);
+    );    
   },
   methods: {
     updateAuthUser: function() {

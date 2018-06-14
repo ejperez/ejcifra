@@ -83,7 +83,7 @@ export default {
     };
   },
   created: function() {
-    var scope = this;    
+    var scope = this;
 
     this.handlers = {
       success: function(result) {
@@ -95,7 +95,10 @@ export default {
             scope.transpose();
           } else {
             try {
-              scope.content = ChordPlus.getHTML(scope.song.body);
+              scope.content = ChordPlus.getHTML(
+                scope.song.body,
+                scope.song.key
+              );
             } catch (exception) {
               scope.$emit("show-message", {
                 message: exception.message,
