@@ -120,7 +120,17 @@ export default {
     };
   },
   mounted: function() {
-    SongsService.getSingle(this.handlers.success, this.handlers.error, this.id);
+    var scope = this;
+    var interval = setInterval(function() {
+      if (typeof ChordPlus !== "undefined") {
+        SongsService.getSingle(
+          scope.handlers.success,
+          scope.handlers.error,
+          scope.id
+        );
+        clearInterval(interval);
+      }
+    }, 200);
   },
   methods: {
     transpose: function() {
