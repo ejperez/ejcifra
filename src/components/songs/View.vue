@@ -97,6 +97,7 @@ export default {
             try {
               scope.content = ChordPlus.getHTML(
                 scope.song.body,
+                scope.song.key,
                 scope.song.key
               );
             } catch (exception) {
@@ -137,18 +138,16 @@ export default {
           });
         }
 
-        if (this.song.key !== this.newKey) {
-          this.$router.push({
-            name: "SongsView",
-            params: {
-              id: this.song.id,
-              slug: this.song.slug
-            },
-            query: {
-              key: this.newKey
-            }
-          });
-        }
+        this.$router.push({
+          name: "SongsView",
+          params: {
+            id: this.song.id,
+            slug: this.song.slug
+          },
+          query: {
+            key: this.newKey
+          }
+        });
       }
     },
     reset: function() {
@@ -156,7 +155,11 @@ export default {
         this.newKey = null;
 
         try {
-          this.content = ChordPlus.getHTML(this.song.body, this.song.key);
+          this.content = ChordPlus.getHTML(
+            this.song.body,
+            this.song.key,
+            this.song.key
+          );
         } catch (exception) {
           scope.$emit("show-message", {
             message: exception.message,

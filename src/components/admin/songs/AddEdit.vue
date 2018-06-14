@@ -173,7 +173,7 @@ export default {
     save: function() {
       // Check for source code errors
       try {
-        ChordPlus.getHTML(this.song.body, this.song.key);
+        ChordPlus.getHTML(this.song.body, this.song.key, this.song.key);
         this.parseErrorMessage = null;
 
         SongsService.saveDraft(JSON.stringify(this.song));
