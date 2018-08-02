@@ -60,21 +60,19 @@
 <script>
 import SongsService from "@/services/SongsService";
 
-var defaultSong = {
-  title: "",
-  artists: "",
-  key: "C",
-  bpm: 100,
-  meter: "4/4",
-  comment: ""
-};
-
 export default {
   name: "AdminSongsAddEdit",
   props: ["id", "slug"],
   data: function() {
     return {
-      song: defaultSong,
+      song: {
+        title: "",
+        artists: "",
+        key: "C",
+        bpm: 100,
+        meter: "4/4",
+        comment: ""
+      },
       symbols: ["[", "]", "|", "/", "#", ":", "-", "_", "(", ")"],
       meters: ["4/4", "3/4", "6/8"],
       keys: [
@@ -104,7 +102,14 @@ export default {
   watch: {
     id: function(newId, oldId) {
       if (!newId) {
-        this.song = defaultSong;
+        this.song = {
+          title: "",
+          artists: "",
+          key: "C",
+          bpm: 100,
+          meter: "4/4",
+          comment: ""
+        };
       }
     }
   },
@@ -126,7 +131,12 @@ export default {
             message: "Saved.",
             type: "success"
           });
-        } else {
+        } else {          
+          scope.$emit("show-message", {
+            message: "Saved.",
+            type: "success"
+          });
+
           scope.$router.push({
             name: "AdminSongsEdit",
             params: { id: song.id, slug: song.slug }
