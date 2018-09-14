@@ -7,8 +7,7 @@
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
-	"build": "node build/build.js",
-	"build2": "rmdir docs /s /q && mkdir docs && node build/build.js && xcopy dist docs /s /y",
+	"build": "del /S /Q docs && node build/build.js && xcopy dist docs /s /y",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {

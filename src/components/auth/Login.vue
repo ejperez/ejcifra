@@ -7,7 +7,7 @@
 			<label for="inputPassword" class="sr-only">Password</label>
 			<input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" v-model="password">
 			<button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
-			<p class="mt-5 mb-3 text-muted">© 2017-2018</p>
+			<p class="mt-5 mb-3 text-muted">© 2018</p>
     	</form>
 	</div>	
 </template>
