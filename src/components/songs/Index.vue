@@ -2,7 +2,7 @@
 	<div class="index">
 		<h1>{{ msg }}</h1>
 
-		<form v-on:submit.prevent="search()">
+		<form v-if="isOnline" v-on:submit.prevent="search()">
 			<div class="input-group mb-3">
 				<input class="form-control" v-model="searchKeyword" type="text" placeholder="Title or artist name...">
 				<div class="input-group-append">
@@ -11,9 +11,10 @@
 			</div>			
 		</form>
 
-		<div class="list-group">			
+		<div v-if="songs.length" class="list-group">			
 			<router-link v-for="song in songs" :key="song.id" class="list-group-item list-group-item-action" :to="{ name: 'SongsView', params: { id: song.id, slug: song.slug } }">{{ song.title }} - {{ song.artists }} {{ song.comment ? '(' + song.comment  + ')' : '' }}</router-link>
 		</div>
+		<div v-else>No songs to show.</div>
 
 		<nav class="pagination-container" v-if="pages.length > 1" aria-label="Pagination">
 			<ul class="pagination justify-content-center">
@@ -25,6 +26,7 @@
 
 <script>
 import SongsService from "@/services/SongsService";
+import OfflineSongsService from "@/services/OfflineSongsService";
 
 export default {
   name: "SongsIndex",
@@ -34,7 +36,8 @@ export default {
       songs: [],
       searchKeyword: "",
       pages: [],
-      currentPage: 1
+      currentPage: 1,
+      isOnline: true
     };
   },
   created: function() {
@@ -58,6 +61,12 @@ export default {
       },
       error: function(error) {
         console.debug(error);
+
+        // Show offline songs
+        scope.isOnline = false;
+        scope.msg = "Offline Songs";
+
+        scope.songs = OfflineSongsService.get();
       }
     };
   },
@@ -98,6 +107,6 @@ export default {
   margin-top: 20px;
 }
 .list-group-item {
-	font-size: 18px;
+  font-size: 18px;
 }
 </style>

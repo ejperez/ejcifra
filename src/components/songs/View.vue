@@ -33,6 +33,10 @@
 					</select>
 					<div class="input-group-append">
 						<button class="btn btn-outline-secondary" type="button" @click="reset()">Reset key</button>
+
+						<button v-if="isOnline" class="btn btn-outline-secondary" type="button" @click="saveOffline()">Save offline</button>
+						<button v-else class="btn btn-outline-secondary" type="button" @click="removeOffline()">Remove offline copy</button>
+
 						<button class="btn btn-outline-primary" type="button" onclick="print()">Print</button>
 					</div>
 				</div>
@@ -45,6 +49,7 @@
 
 <script>
 import SongsService from "@/services/SongsService";
+import OfflineSongsService from "@/services/OfflineSongsService";
 
 export default {
   name: "SongsView",
@@ -59,6 +64,7 @@ export default {
         meter: "",
         comment: false
       },
+      isOnline: true,
       content: "",
       keys: [
         "C",
@@ -116,6 +122,23 @@ export default {
       },
       error: function(error) {
         console.debug(error);
+
+        // Get offline versions
+        scope.isOnline = false;
+        scope.song = OfflineSongsService.getSingle(scope.id);
+
+        try {
+          scope.content = ChordPlus.getHTML(
+            scope.song.body,
+            scope.song.key,
+            scope.song.key
+          );
+        } catch (exception) {
+          scope.$emit("show-message", {
+            message: exception.message,
+            type: "danger"
+          });
+        }
       }
     };
   },
@@ -185,6 +208,26 @@ export default {
           }
         });
       }
+    },
+    saveOffline: function() {
+      OfflineSongsService.save(this.song.id, this.song);
+
+      this.$emit("show-message", {
+        message: "Song saved offline.",
+        type: "info"
+      });
+    },
+    removeOffline: function() {
+      OfflineSongsService.delete(this.song.id);
+
+      this.$emit("show-message", {
+        message: "Song offline copy removed.",
+        type: "info"
+      });
+
+      this.$router.push({
+        name: "SongsIndex"
+      });
     }
   }
 };

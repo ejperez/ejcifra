@@ -126,7 +126,7 @@ export default {
       setTimeout(function() {
         scope.message = false;
         scope.messageType = "success";
-      }, 10000);
+      }, 5000);
     },
     progress: function(showProgress) {
       this.showProgress = showProgress;
