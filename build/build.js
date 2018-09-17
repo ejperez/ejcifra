@@ -41,7 +41,7 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
 	shell.cp('-rf', 'dist/*', 'docs')
 	console.log(chalk.cyan('  Copied content of dist to docs.\n'))
 	
-	shell.sed('-i', '/static', 'static', 'docs/index.html')
+	shell.sed('-i', /\/static/gm, 'static', 'docs/index.html')
 	console.log(chalk.cyan('  Modified index.html.\n'))
   })
 })
