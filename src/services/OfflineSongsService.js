@@ -1,7 +1,7 @@
 var prefix = 'song-';
 
 var OfflineSongsService = {
-	get: function () {
+	get: function ( search ) {
 		let songs = [];
 
 		Object.keys( localStorage ).forEach( function ( key ) {
@@ -11,7 +11,16 @@ var OfflineSongsService = {
 				if ( !song )
 					return;
 
-				songs.push( JSON.parse( song ) );
+				song = JSON.parse( song );
+
+				if ( search ) {
+					search = search.toLowerCase();
+
+					if( song.title.toLowerCase().indexOf( search ) === -1 && song.artists.toLowerCase().indexOf( search ) === -1 )
+						return;
+				}
+
+				songs.push( song );
 			}
 		} );
 

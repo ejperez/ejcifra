@@ -1,6 +1,6 @@
 <template>
 	<div class="index">
-		<nav aria-label="breadcrumb" class="hidden-print d-none d-sm-block">
+		<nav aria-label="breadcrumb" class="d-print-none d-none d-sm-block">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item"><router-link class="breadcrumb-item" :to="{ name: 'SongsIndex' }">Songs</router-link></li>				
 				<li class="breadcrumb-item active" aria-current="page">{{ song.title }}</li>
@@ -22,7 +22,7 @@
 			</div>			
 		</div>
 
-		<div class="row hidden-print toolbar">
+		<div class="row d-print-none toolbar">
 			<div class="col-md-12">
 				<div class="input-group">
 					<div class="input-group-prepend">
@@ -127,6 +127,19 @@ export default {
         scope.isOnline = false;
         scope.song = OfflineSongsService.getSingle(scope.id);
 
+        if (!scope.song) {
+          scope.$emit("show-message", {
+            message: "Offline version not available.",
+            type: "danger"
+          });
+
+          scope.$router.push({
+            name: "SongsIndex"
+          });
+
+          return;
+        }
+
         try {
           scope.content = ChordPlus.getHTML(
             scope.song.body,
@@ -221,7 +234,7 @@ export default {
       OfflineSongsService.delete(this.song.id);
 
       this.$emit("show-message", {
-        message: "Song offline copy removed.",
+        message: "Offline version removed.",
         type: "info"
       });
 
@@ -253,11 +266,5 @@ export default {
 
 .toolbar {
   margin-top: 20px;
-}
-
-@media print {
-  .hidden-print {
-    display: none;
-  }
 }
 </style>

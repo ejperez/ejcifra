@@ -1,6 +1,9 @@
 <template>
 	<div class="index">
 		<h1>{{ msg }}</h1>
+		<font-awesome-icon icon="coffee" />
+		<font-awesome-icon icon="cog" />
+		<font-awesome-icon icon="search" />
 
 		<form v-on:submit.prevent="search()">
 			<div class="input-group mb-3">
@@ -15,7 +18,9 @@
 			<div v-for="song in songs" :key="song.id" class="list-group-item">
 				<div class="row">
 					<div class="col">
-						<span class="song-title">{{ song.title }} <span v-if="song.artists">-</span> {{ song.artists }} {{ song.comment ? '(' + song.comment  + ')' : '' }}</span>
+						<span class="song-title">{{ song.title }} <span v-if="song.artists">-</span> {{ song.artists }} {{ song.comment ? '(' + song.comment  + ')' : '' }}</span>						
+					</div>
+					<div class="col text-right">
 						<div class="btn-group" role="group">
 							<button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
 							<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">

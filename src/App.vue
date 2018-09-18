@@ -11,7 +11,7 @@
 			</button>
 
 			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav ml-auto">
+				<ul class="navbar-nav">
 					<template v-if="user">
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Songs</a>
@@ -19,7 +19,17 @@
 								<router-link class="dropdown-item" :to="{ name: 'AdminSongsIndex' }">View All</router-link>
 								<router-link class="dropdown-item" :to="{ name: 'AdminSongsAdd' }">Add New</router-link>
 							</div>
-						</li>
+						</li>						
+					</template>
+					<template v-else>
+						<li class="nav-item">
+							<router-link class="nav-link" :to="{ name: 'SongsIndex' }">Songs</router-link>
+						</li>						
+					</template>
+					<li class="nav-item"></li>
+				</ul>
+				<ul class="navbar-nav ml-auto">
+					<template v-if="user">
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Welcome, {{ user.name }}</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -28,9 +38,6 @@
 						</li>						
 					</template>
 					<template v-else>
-						<li class="nav-item">
-							<router-link class="nav-link" :to="{ name: 'SongsIndex' }">Songs</router-link>
-						</li>
 						<li class="nav-item">
 							<router-link class="nav-link" :to="{ name: 'AuthLogin' }">Log in</router-link>
 						</li>

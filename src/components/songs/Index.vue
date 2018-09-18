@@ -2,7 +2,7 @@
 	<div class="index">
 		<h1>{{ msg }}</h1>
 
-		<form v-if="isOnline" v-on:submit.prevent="search()">
+		<form v-on:submit.prevent="search()">
 			<div class="input-group mb-3">
 				<input class="form-control" v-model="searchKeyword" type="text" placeholder="Title or artist name...">
 				<div class="input-group-append">
@@ -79,11 +79,22 @@ export default {
 
       scope.currentPage = 1;
 
-      SongsService.get(
-        this.handlers.success,
-        this.handlers.error,
-        scope.searchKeyword
-      );
+      if (scope.isOnline) {
+        SongsService.get(
+          scope.handlers.success,
+          scope.handlers.error,
+          scope.searchKeyword
+        );
+      } else {
+        scope.songs = OfflineSongsService.get(scope.searchKeyword);
+
+        if (scope.songs.length === 0) {
+          scope.$emit("show-message", {
+            message: "No songs matching your search. Please try again.",
+            type: "info"
+          });
+        }
+      }
     },
     goToPage: function(page) {
       var scope = this;
