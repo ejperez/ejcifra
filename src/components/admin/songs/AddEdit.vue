@@ -1,12 +1,5 @@
 <template>
 	<div class="index">
-		<nav class="d-none d-sm-block" aria-label="breadcrumb">
-			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><router-link :to="{ name: 'AdminSongsIndex' }">Admin Songs</router-link></li>				
-				<li class="breadcrumb-item active" aria-current="page">{{ song.title || 'New Song' }}</li>
-			</ol>
-		</nav>
-
 		<form v-on:submit.prevent="save()">
 			<div class="form-row">
 				<div class="form-group col-md-6">

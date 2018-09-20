@@ -6,7 +6,9 @@
 			<div class="input-group mb-3">
 				<input class="form-control" v-model="searchKeyword" type="text" placeholder="Title or artist name...">
 				<div class="input-group-append">
-					<button class="btn btn-outline-primary" type="submit">Search</button>
+					<button class="btn btn-outline-primary" type="submit">
+						<font-awesome-icon icon="search" />
+					</button>
 				</div>
 			</div>			
 		</form>

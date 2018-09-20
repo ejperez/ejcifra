@@ -52,7 +52,7 @@
 
 		<div v-if="message" :class="alertClass" role="alert"><span v-html="message"></span><button @click="message = null" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
 
-		<div class="container-fluid">
+		<div class="container-fluid content">
 			<router-view @show-message="showMessage" @logged-in="updateAuthUser"/>
 		</div>
 	</div>
@@ -242,7 +242,7 @@ export default {
 </style>
 
 <style>
-.breadcrumb {
+.content {
   margin-top: 20px;
 }
 </style>

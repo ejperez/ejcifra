@@ -1,14 +1,7 @@
 <template>
-	<div class="index">
-		<nav aria-label="breadcrumb" class="d-print-none d-none d-sm-block">
-			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><router-link class="breadcrumb-item" :to="{ name: 'SongsIndex' }">Songs</router-link></li>				
-				<li class="breadcrumb-item active" aria-current="page">{{ song.title }}</li>
-			</ol>
-		</nav>
-
+	<div class="index">	
 		<div class="row">
-			<div class="col-md-12 song-container">
+			<div class="col song-container">
 				<h1 class="song-title">
 					{{ song.title }} <span v-if="song.artists">-</span> {{ song.artists }}
 				</h1>
@@ -22,22 +15,23 @@
 			</div>			
 		</div>
 
-		<div class="row d-print-none toolbar">
-			<div class="col-md-12">
+		<div class="row">
+			<div class="col d-print-none toolbar">
 				<div class="input-group">
-					<div class="input-group-prepend">
-						<label class="input-group-text">Change key</label>
-					</div>
-					<select v-model="newKey" v-on:change="transpose()">
-						<option v-for="key in keys" :value="key" :key="key">{{ key }}</option>
+					<select class="custom-select" v-model="newKey" v-on:change="transpose()" title="Change key">
+						<option v-for="key in keys" :value="key.value" :key="key.value">{{ key.label }}</option>
 					</select>
 					<div class="input-group-append">
-						<button class="btn btn-outline-secondary" type="button" @click="reset()">Reset key</button>
+						<button v-if="isOnline" class="btn btn-outline-secondary" type="button" @click="saveOffline()" title="Save offline">
+							<font-awesome-icon icon="save" />
+						</button>
+						<button v-else class="btn btn-outline-secondary" type="button" @click="removeOffline()" title="Remove offline copy">
+							<font-awesome-icon icon="trash-alt" />
+						</button>
 
-						<button v-if="isOnline" class="btn btn-outline-secondary" type="button" @click="saveOffline()">Save offline</button>
-						<button v-else class="btn btn-outline-secondary" type="button" @click="removeOffline()">Remove offline copy</button>
-
-						<button class="btn btn-outline-primary" type="button" onclick="print()">Print</button>
+						<button class="btn btn-outline-primary" type="button" onclick="print()" title="Print">
+							<font-awesome-icon icon="print" />
+						</button>
 					</div>
 				</div>
 			</div>
@@ -50,6 +44,7 @@
 <script>
 import SongsService from "@/services/SongsService";
 import OfflineSongsService from "@/services/OfflineSongsService";
+import AuthService from "@/services/AuthService";
 
 export default {
   name: "SongsView",
@@ -64,37 +59,40 @@ export default {
         meter: "",
         comment: false
       },
+      user: null,
       isOnline: true,
       content: "",
       keys: [
-        "C",
-        "C#",
-        "Db",
-        "D",
-        "D#",
-        "Eb",
-        "E",
-        "F",
-        "F#",
-        "Gb",
-        "G",
-        "G#",
-        "Ab",
-        "A",
-        "A#",
-        "Bb",
-        "B"
+        { value: "C", label: "C" },
+        { value: "C#", label: "C#" },
+        { value: "Db", label: "Db" },
+        { value: "D", label: "D" },
+        { value: "D#", label: "D#" },
+        { value: "Eb", label: "Eb" },
+        { value: "E", label: "E" },
+        { value: "F", label: "F" },
+        { value: "F#", label: "F#" },
+        { value: "Gb", label: "Gb" },
+        { value: "G", label: "G" },
+        { value: "G#", label: "G#" },
+        { value: "Ab", label: "Ab" },
+        { value: "A", label: "A" },
+        { value: "A#", label: "A#" },
+        { value: "Bb", label: "Bb" },
+        { value: "B", label: "B" }
       ],
       newKey: null
     };
   },
   created: function() {
     var scope = this;
+    this.user = AuthService.getLoggedInUser();
 
     this.handlers = {
       success: function(result) {
         if (result.data) {
           scope.song = result.data;
+          scope.setOriginalKey();
 
           if (scope.$route.query.hasOwnProperty("key")) {
             scope.newKey = scope.$route.query.key;
@@ -126,6 +124,7 @@ export default {
         // Get offline versions
         scope.isOnline = false;
         scope.song = OfflineSongsService.getSingle(scope.id);
+        scope.setOriginalKey();
 
         if (!scope.song) {
           scope.$emit("show-message", {
@@ -169,6 +168,17 @@ export default {
     }, 200);
   },
   methods: {
+    setOriginalKey: function() {
+      var scope = this;
+
+      this.keys.forEach(function(item, index) {
+        if (item.value === scope.song.key) {
+          scope.keys[index].label = item.value + " (Original key)";
+        }
+      });
+
+      this.newKey = scope.song.key;
+    },
     transpose: function() {
       if (this.song) {
         try {
@@ -178,7 +188,7 @@ export default {
             this.newKey
           );
         } catch (exception) {
-          scope.$emit("show-message", {
+          this.$emit("show-message", {
             message: exception.message,
             type: "danger"
           });
@@ -192,32 +202,6 @@ export default {
           },
           query: {
             key: this.newKey
-          }
-        });
-      }
-    },
-    reset: function() {
-      if (this.song) {
-        this.newKey = null;
-
-        try {
-          this.content = ChordPlus.getHTML(
-            this.song.body,
-            this.song.key,
-            this.song.key
-          );
-        } catch (exception) {
-          scope.$emit("show-message", {
-            message: exception.message,
-            type: "danger"
-          });
-        }
-
-        this.$router.push({
-          name: "SongsView",
-          params: {
-            id: this.song.id,
-            slug: this.song.slug
           }
         });
       }

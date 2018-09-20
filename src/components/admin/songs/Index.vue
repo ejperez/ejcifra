@@ -1,15 +1,14 @@
 <template>
 	<div class="index">
 		<h1>{{ msg }}</h1>
-		<font-awesome-icon icon="coffee" />
-		<font-awesome-icon icon="cog" />
-		<font-awesome-icon icon="search" />
 
 		<form v-on:submit.prevent="search()">
 			<div class="input-group mb-3">
 				<input class="form-control" v-model="searchKeyword" type="text" placeholder="Title or artist name...">
 				<div class="input-group-append">
-					<button class="btn btn-outline-primary" type="submit">Search</button>
+					<button class="btn btn-outline-primary" type="submit">
+						<font-awesome-icon icon="search" />
+					</button>
 				</div>
 			</div>			
 		</form>
@@ -22,13 +21,18 @@
 					</div>
 					<div class="col text-right">
 						<div class="btn-group" role="group">
-							<button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
-							<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-								<router-link class="dropdown-item" :to="{ name: 'SongsView', params: { id: song.id, slug: song.slug } }">View</router-link>
-								<router-link class="dropdown-item" :to="{ name: 'AdminSongsEdit', params: { id: song.id, slug: song.slug } }">Edit</router-link>
-								<button class="dropdown-item" @click="duplicate(song)" type="button">Duplicate</button>
-								<button class="dropdown-item" @click="remove(song)" type="button">Delete</button>
-							</div>
+							<router-link class="btn btn-outline-secondary" :to="{ name: 'SongsView', params: { id: song.id, slug: song.slug } }" title="View">
+								<font-awesome-icon icon="eye" />
+							</router-link>
+							<router-link class="btn btn-outline-secondary" :to="{ name: 'AdminSongsEdit', params: { id: song.id, slug: song.slug } }" title="Edit">
+								<font-awesome-icon icon="edit" />
+							</router-link>
+							<button class="btn btn-outline-secondary" @click="duplicate(song)" type="button" title="Duplicate">
+								<font-awesome-icon icon="clone" />
+							</button>
+							<button class="btn btn-outline-danger" @click="remove(song)" type="button" title="Delete">
+								<font-awesome-icon icon="trash-alt" />
+							</button>
 						</div>
 					</div>
 				</div>
