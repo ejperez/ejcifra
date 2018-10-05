@@ -124,11 +124,13 @@ export default {
             message: "Saved.",
             type: "success"
           });
-        } else {          
+        } else {
           scope.$emit("show-message", {
             message: "Saved.",
             type: "success"
           });
+
+          scope.song = song;
 
           scope.$router.push({
             name: "AdminSongsEdit",
