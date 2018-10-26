@@ -14,11 +14,11 @@ Vue.component( 'font-awesome-icon', FontAwesomeIcon )
 
 Vue.config.productionTip = false;
 
-// if ( process.env.NODE_ENV === 'production' ) {
-// 	window.apiHost = 'https://ejcifra-api.herokuapp.com/api'
-// } else {
+if ( process.env.NODE_ENV === 'production' ) {
+	window.apiHost = 'https://ejcifra-api.herokuapp.com/api'
+} else {
 	window.apiHost = 'http://ejcifra-api/api'
-// }
+}
 
 window.axios = axios;
 
